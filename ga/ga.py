@@ -91,7 +91,7 @@ def run(inp: WusnInput, logger = None):
     return best_individual
 
 if __name__ == "__main__":
-    path = "data/hop-data/hop/ga-dem5_r25_1.json"
+    path = "data/hop/ga-dem5_r25_1_0.json"
     inp = WusnInput.from_file(path)
 
     logger = init_log()

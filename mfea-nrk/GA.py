@@ -8,10 +8,10 @@ from itertools import combinations
 import random
 
 from utils.input import WusnInput
-from constructor.binary import Hop
+from constructor.nrk import Nrk
 from utils.logger import init_log
 
-N_GENS = 200
+N_GENS = 100
 POPULATION_SIZE = 300
 CXPB = 0.8
 MUTPB = 0.2
@@ -20,36 +20,60 @@ creator.create("FitnessMin", base.Fitness, weights=(-1.,))
 FitnessMin = creator.FitnessMin
 creator.create("Individual", list, fitness=FitnessMin)
 
-def init_individual(num_of_relays, max_relays=4):
-    indiviadual = [0] * num_of_relays
-    relay_indices = random.sample(list(range(num_of_relays)), max_relays)
-    
-    for index in relay_indices:
-        indiviadual[index] = 1
+def init_individual(num_of_relays, num_of_sensors):
+    length = 2 * (num_of_sensors + num_of_relays + 1)
 
-    return creator.Individual(indiviadual)
+    individual = list(np.random.uniform(0, 1, size=(length,)))
+
+    return creator.Individual(individual)
 
 def get_fitness(individual, constructor):
     return constructor.get_loss(individual)
 
-def run(inp: WusnInput, logger = None):    
-    max_relays = 5
+def crossover(ind1, ind2, indpb=0.2):
+    # size = min(len(ind1), len(ind2))
+    # for i in range(size):
+    #     if np.random.random() < indpb:
+    #         ind1[i], ind2[i] = ind2[i], ind1[i]
+
+    r1, r2 = np.random.randint(0, len(ind1)), np.random.randint(0, len(ind1))
+    r1, r2 = min(r1, r2), max(r1, r2)
+    
+    ind1[:r1], ind2[:r1] = ind2[:r1], ind1[:r1]
+    ind1[r2:], ind2[r2:] = ind2[r2:], ind1[r2:]
+
+    avg = [(tmp1 + tmp2)/2 for tmp1, tmp2 in zip(ind1[r1:r2], ind2[r1:r2])]
+    ind1[r1:r2], ind2[r1:r2] = avg, avg
+
+    return ind1, ind2
+
+def mutate(ind, mu=0, sigma=0.2, indpb=0.4):
+    size = len(ind)
+
+    for i in range(size):
+        if np.random.random() < indpb:
+            ind[i] += random.gauss(mu, sigma)
+
+    return ind,
+
+def run(inp: WusnInput, flog, logger = None, is_hop=True):    
+    max_relays = 14
     max_hops = 6
 
     toolbox = base.Toolbox()
 
-    constructor = Hop(inp, max_relays, max_hops)
+    constructor = Nrk(inp, max_relays, max_hops, is_hop=is_hop)
 
-    toolbox.register("individual", init_individual, inp.num_of_relays, max_relays)
+    toolbox.register("individual", init_individual, inp.num_of_relays, inp.num_of_sensors)
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-    toolbox.register("mate", tools.cxTwoPoint)
-    toolbox.register("mutate", tools.mutFlipBit, indpb=0.2)
+    toolbox.register("mate", crossover)
+    toolbox.register("mutate", mutate, indpb=0.2)
     toolbox.register("select", tools.selTournament, tournsize=20)
     toolbox.register("evaluate", get_fitness, constructor=constructor)
 
     pop = toolbox.population(POPULATION_SIZE)
     best_individual = toolbox.clone(pop[0])
-    logger.info("init best individual: %s, fitness: %s" % (best_individual, toolbox.evaluate(best_individual)))
+    # logger.info("init best individual: %s, fitness: %s" % (best_individual, toolbox.evaluate(best_individual)))
 
     for g in range(N_GENS):
         # Selection
@@ -84,21 +108,35 @@ def run(inp: WusnInput, logger = None):
         # b = round(min_value, 6)
         pop[:] = intermediate[:]
 
+        father, num_child, _ = constructor.decode_genes(best_individual)
+        obj = constructor.get_loss(best_individual)
+
+        flog.write(f'{father}\t{num_child}\t{obj}\n')
+
         logger.info("Min value this pop %d : %f " % (g, min_value))
 
-    logger.info("Finished! Best individual: %s, fitness: %s" % (best_individual, toolbox.evaluate(best_individual)))
-
-    return best_individual
+    # logger.info("Finished! Best individual: %s, fitness: %s" % (best_individual, toolbox.evaluate(best_individual)))
+    # return best_individual
 
 if __name__ == "__main__":
-    path = "data/hop-data/hop/ga-dem5_r25_1.json"
-    inp = WusnInput.from_file(path)
-
     logger = init_log()
-    logger.info("prepare input data from path %s" % path)
-    logger.info("num generation: %s" % N_GENS)
-    logger.info("population size: %s" % POPULATION_SIZE)
-    logger.info("crossover probability: %s" % CXPB)
-    logger.info("mutation probability: %s" % MUTPB)
 
-    run(inp, logger=logger)
+    for data_dir in ['data/hop', 'data/layer']:
+        is_hop = True if data_dir == 'data/hop' else False
+        logdir = 'logs/hop' if data_dir == 'data/hop' else 'logs/layer'
+
+        for fn in os.listdir(data_dir):
+            path = os.path.join(data_dir, fn)
+            flog = open(f'{logdir}/{fn[:-5]}.txt', 'w+')
+
+            inp = WusnInput.from_file(path)
+
+            logger.info("prepare input data from path %s" % path)
+            logger.info("num generation: %s" % N_GENS)
+            logger.info("population size: %s" % POPULATION_SIZE)
+            logger.info("crossover probability: %s" % CXPB)
+            logger.info("mutation probability: %s" % MUTPB)
+
+            flog.write(f'{fn}\n')
+
+            run(inp, flog, logger=logger, is_hop=is_hop)
