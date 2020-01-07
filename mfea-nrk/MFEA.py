@@ -24,15 +24,16 @@ def init_individual(num_of_relays, num_of_sensors):
 
     return individual
 
-def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, logger=None):
+def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
     if logger is None:
         raise Exception("Error: logger is None!")
 
     logger.info("Start!")
     num_of_relays = 14
+    max_hop = 6
 
-    hopConstructor = Nrk(hop_inp, max_relay=num_of_relays, is_hop=True)
-    layerContructor = Nrk(layer_inp, max_relay=num_of_relays, is_hop=False)
+    hopConstructor = Nrk(hop_inp, max_relay=num_of_relays, is_hop=True, hop=max_hop)
+    layerContructor = Nrk(layer_inp, max_relay=num_of_relays, is_hop=False, hop=1000)
 
     def factorial_rank(pop):
         factorial_cost = [(hopConstructor.get_loss(indi), layerContructor.get_loss(hopConstructor.transform_genes(indi, layer_inp.num_of_relays))) for indi in pop]
@@ -109,10 +110,12 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, logger=None):
 
     offspring_pop = assortive_mating(pop, pop_skill_factor)
 
-    best_individual1, best_individual2 = None, None
+    hop_individual, layer_individual = None, None
+
 
     for g in range(N_GENS):
         logger.info(f"Generation {g}")
+        flog.write(f'GEN {g}\n')
 
         offspring_pop = assortive_mating(pop, pop_skill_factor)
         
@@ -122,30 +125,41 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, logger=None):
 
         pop, pop_skill_factor = selection(immediate_pop, pop_skill_factor, pop_scalar_fitness)
 
-        best_individual1, best_individual2 = pop[0], pop[1]
+        if pop_skill_factor[0] == 0:
+            hop_individual, layer_individual = pop[0], pop[1]
+        else:
+            hop_individual, layer_individual = pop[1], pop[0]
 
-    best_obj1 = min(hopConstructor.get_loss(best_individual1), hopConstructor.get_loss(best_individual2))
-    best_obj2 = min(layerContructor.get_loss(hopConstructor.transform_genes(best_individual1, layer_inp.num_of_sensors)), layerContructor.get_loss(hopConstructor.transform_genes(best_individual2, layer_inp.num_of_sensors)))
-    return best_obj1, best_obj2
+        hop_obj = hopConstructor.get_loss(hop_individual)
+        layer_obj = layerContructor.get_loss(hopConstructor.transform_genes(layer_individual, layer_inp.num_of_sensors))
+
+        hop_father, hop_childcount, _ = hopConstructor.decode_genes(hop_individual)
+        layer_father, layer_childcount, _ = layerContructor.decode_genes(hopConstructor.transform_genes(layer_individual, layer_inp.num_of_sensors))
+
+        flog.write(f'{hop_father}\t{hop_childcount}\t{hop_obj}\n{layer_father}\t{layer_childcount}\t{layer_obj}\n')
 
 if __name__ == '__main__':
     logger = init_log()
-    hop_path = './data/hop'
-    layer_path = './data/layer'
-    with open('nrknrk.txt', 'w+') as f:
-        for fn in sorted(os.listdir(hop_path))[:10]:
-            hop_fn = os.path.join(hop_path, fn)
-            layer_fn = os.path.join(layer_path, fn)
+    hop_dir = './data/hop'
+    layer_dir = './data/layer'
 
-            logger.info(f"prepare input data from path {hop_fn} and {layer_fn}")
-            hop_inp = WusnInput.from_file(hop_fn)
-            layer_inp = WusnInput.from_file(layer_fn)
-            logger.info("num generation: %s" % N_GENS)
-            logger.info("population size: %s" % POP_SIZE)
-            logger.info("crossover probability: %s" % CXPB)
-            logger.info("mutation probability: %s" % MUTPB)
-            # logger.info("info input: %s" % inp.to_dict())
-            logger.info("run GA....")
-            best_obj1, best_obj2 = run_ga(hop_inp, layer_inp, logger)
+    for fn in sorted(os.listdir(hop_dir))[:10]:
+        layer_fn = '_'.join(fn.split('_')[:-1]) + '.json'
 
-            f.write(f'{fn} {best_obj1} {best_obj2}\n')
+        hop_path = os.path.join(hop_dir, fn)
+        layer_path = os.path.join(layer_dir, layer_fn)
+
+        logger.info(f"prepare input data from path {hop_path} and {layer_path}")
+        hop_inp = WusnInput.from_file(hop_path)
+        layer_inp = WusnInput.from_file(layer_path)
+        logger.info("num generation: %s" % N_GENS)
+        logger.info("population size: %s" % POP_SIZE)
+        logger.info("crossover probability: %s" % CXPB)
+        logger.info("mutation probability: %s" % MUTPB)
+        logger.info("run GA....")
+
+        flog = open(f'logs/mfea/{fn[:-5]}.txt', 'w+')
+
+        flog.write(f'{fn} {layer_fn}\n')
+
+        run_ga(hop_inp, layer_inp, flog, logger)
