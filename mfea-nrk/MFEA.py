@@ -143,7 +143,7 @@ if __name__ == '__main__':
     hop_dir = './data/hop'
     layer_dir = './data/layer'
 
-    for fn in sorted(os.listdir(hop_dir))[:10]:
+    for fn in sorted(os.listdir(hop_dir)):
         layer_fn = '_'.join(fn.split('_')[:-1]) + '.json'
 
         hop_path = os.path.join(hop_dir, fn)
