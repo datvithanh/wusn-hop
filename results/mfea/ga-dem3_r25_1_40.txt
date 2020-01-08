@@ -1,0 +1,301 @@
+ga-dem3_r25_1_40.json ga-dem3_r25_1.json
+GEN 0
+None	None	inf
+None	None	inf
+GEN 1
+None	None	inf
+None	None	inf
+GEN 2
+None	None	inf
+None	None	inf
+GEN 3
+None	None	inf
+None	None	inf
+GEN 4
+None	None	inf
+None	None	inf
+GEN 5
+None	None	inf
+None	None	inf
+GEN 6
+None	None	inf
+None	None	inf
+GEN 7
+None	None	inf
+None	None	inf
+GEN 8
+None	None	inf
+None	None	inf
+GEN 9
+None	None	inf
+None	None	inf
+GEN 10
+None	None	inf
+None	None	inf
+GEN 11
+None	None	inf
+None	None	inf
+GEN 12
+None	None	inf
+None	None	inf
+GEN 13
+None	None	inf
+None	None	inf
+GEN 14
+None	None	inf
+None	None	inf
+GEN 15
+None	None	inf
+None	None	inf
+GEN 16
+None	None	inf
+None	None	inf
+GEN 17
+None	None	inf
+None	None	inf
+GEN 18
+None	None	inf
+None	None	inf
+GEN 19
+None	None	inf
+None	None	inf
+GEN 20
+None	None	inf
+None	None	inf
+GEN 21
+None	None	inf
+None	None	inf
+GEN 22
+None	None	inf
+None	None	inf
+GEN 23
+None	None	inf
+None	None	inf
+GEN 24
+None	None	inf
+None	None	inf
+GEN 25
+None	None	inf
+None	None	inf
+GEN 26
+None	None	inf
+None	None	inf
+GEN 27
+None	None	inf
+None	None	inf
+GEN 28
+None	None	inf
+None	None	inf
+GEN 29
+None	None	inf
+None	None	inf
+GEN 30
+None	None	inf
+None	None	inf
+GEN 31
+None	None	inf
+None	None	inf
+GEN 32
+None	None	inf
+None	None	inf
+GEN 33
+None	None	inf
+None	None	inf
+GEN 34
+None	None	inf
+None	None	inf
+GEN 35
+None	None	inf
+None	None	inf
+GEN 36
+None	None	inf
+None	None	inf
+GEN 37
+None	None	inf
+None	None	inf
+GEN 38
+None	None	inf
+None	None	inf
+GEN 39
+None	None	inf
+None	None	inf
+GEN 40
+None	None	inf
+None	None	inf
+GEN 41
+None	None	inf
+None	None	inf
+GEN 42
+None	None	inf
+None	None	inf
+GEN 43
+None	None	inf
+None	None	inf
+GEN 44
+None	None	inf
+None	None	inf
+GEN 45
+None	None	inf
+None	None	inf
+GEN 46
+None	None	inf
+None	None	inf
+GEN 47
+None	None	inf
+None	None	inf
+GEN 48
+None	None	inf
+None	None	inf
+GEN 49
+None	None	inf
+None	None	inf
+GEN 50
+None	None	inf
+None	None	inf
+GEN 51
+None	None	inf
+None	None	inf
+GEN 52
+None	None	inf
+None	None	inf
+GEN 53
+None	None	inf
+None	None	inf
+GEN 54
+None	None	inf
+None	None	inf
+GEN 55
+None	None	inf
+None	None	inf
+GEN 56
+None	None	inf
+None	None	inf
+GEN 57
+None	None	inf
+None	None	inf
+GEN 58
+None	None	inf
+None	None	inf
+GEN 59
+None	None	inf
+None	None	inf
+GEN 60
+None	None	inf
+None	None	inf
+GEN 61
+None	None	inf
+None	None	inf
+GEN 62
+None	None	inf
+None	None	inf
+GEN 63
+None	None	inf
+None	None	inf
+GEN 64
+None	None	inf
+None	None	inf
+GEN 65
+None	None	inf
+None	None	inf
+GEN 66
+None	None	inf
+None	None	inf
+GEN 67
+None	None	inf
+None	None	inf
+GEN 68
+None	None	inf
+None	None	inf
+GEN 69
+None	None	inf
+None	None	inf
+GEN 70
+None	None	inf
+None	None	inf
+GEN 71
+None	None	inf
+None	None	inf
+GEN 72
+None	None	inf
+None	None	inf
+GEN 73
+None	None	inf
+None	None	inf
+GEN 74
+None	None	inf
+None	None	inf
+GEN 75
+None	None	inf
+None	None	inf
+GEN 76
+None	None	inf
+None	None	inf
+GEN 77
+None	None	inf
+None	None	inf
+GEN 78
+None	None	inf
+None	None	inf
+GEN 79
+None	None	inf
+None	None	inf
+GEN 80
+None	None	inf
+None	None	inf
+GEN 81
+None	None	inf
+None	None	inf
+GEN 82
+None	None	inf
+None	None	inf
+GEN 83
+None	None	inf
+None	None	inf
+GEN 84
+None	None	inf
+None	None	inf
+GEN 85
+None	None	inf
+None	None	inf
+GEN 86
+None	None	inf
+None	None	inf
+GEN 87
+None	None	inf
+None	None	inf
+GEN 88
+None	None	inf
+None	None	inf
+GEN 89
+None	None	inf
+None	None	inf
+GEN 90
+None	None	inf
+None	None	inf
+GEN 91
+None	None	inf
+None	None	inf
+GEN 92
+None	None	inf
+None	None	inf
+GEN 93
+None	None	inf
+None	None	inf
+GEN 94
+None	None	inf
+None	None	inf
+GEN 95
+None	None	inf
+None	None	inf
+GEN 96
+None	None	inf
+None	None	inf
+GEN 97
+None	None	inf
+None	None	inf
+GEN 98
+None	None	inf
+None	None	inf
+GEN 99
+None	None	inf
+None	None	inf
