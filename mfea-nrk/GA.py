@@ -17,11 +17,11 @@ POPULATION_SIZE = 300
 CXPB = 0.8
 MUTPB = 0.2
 
-creator.create("FitnessMin", base.Fitness, weights=(-1.,))
-FitnessMin = creator.FitnessMin
-creator.create("Individual", list, fitness=FitnessMin)
+# creator.create("FitnessMin", base.Fitness, weights=(-1.,))
+# FitnessMin = creator.FitnessMin
+# creator.create("Individual", list, fitness=FitnessMin)
 
-def init_individual(num_of_relays, num_of_sensors, creator):
+def init_individual(num_of_relays, num_of_sensors):
     length = 2 * (num_of_sensors + num_of_relays + 1)
 
     individual = list(np.random.uniform(0, 1, size=(length,)))
@@ -57,7 +57,12 @@ def mutate(ind, mu=0, sigma=0.2, indpb=0.4):
 
     return ind,
 
-def run(inp: WusnInput, flog, logger = None, is_hop=True, creator=None):    
+def run(inp: WusnInput, flog, logger = None, is_hop=True):    
+
+    creator.create("FitnessMin", base.Fitness, weights=(-1.,))
+    FitnessMin = creator.FitnessMin
+    creator.create("Individual", list, fitness=FitnessMin)
+
     max_relays = 14
     max_hops = 8
 
@@ -65,7 +70,7 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True, creator=None):
 
     constructor = Nrk(inp, max_relays, max_hops, is_hop=is_hop)
 
-    toolbox.register("individual", init_individual, inp.num_of_relays, inp.num_of_sensors, creator)
+    toolbox.register("individual", init_individual, inp.num_of_relays, inp.num_of_sensors)
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
     toolbox.register("mate", crossover)
     toolbox.register("mutate", mutate, indpb=0.2)
@@ -119,7 +124,7 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True, creator=None):
     # logger.info("Finished! Best individual: %s, fitness: %s" % (best_individual, toolbox.evaluate(best_individual)))
     # return best_individual
 
-def solve(fn, logger=None, is_hop=True, datadir='data/hop', logdir='results/hop', creator=None):
+def solve(fn, logger=None, is_hop=True, datadir='data/hop', logdir='results/hop'):
     print(f'solving {fn}')
     path = os.path.join(datadir, fn)
     flog = open(f'{logdir}/{fn[:-5]}.txt', 'w+')
@@ -134,7 +139,7 @@ def solve(fn, logger=None, is_hop=True, datadir='data/hop', logdir='results/hop'
 
     flog.write(f'{fn}\n')
 
-    run(inp, flog, logger=logger, is_hop=is_hop, creator=creator)
+    run(inp, flog, logger=logger, is_hop=is_hop)
     print(f'done solved {fn}')
     
 
@@ -144,9 +149,9 @@ if __name__ == "__main__":
     os.makedirs('results/layer', exist_ok=True)
 
     joblib.Parallel(n_jobs=4)(
-        joblib.delayed(solve)(fn, logger=logger, is_hop=True, datadir='data/hop', logdir='results/hop', creator=creator) for fn in os.listdir('data/hop')
+        joblib.delayed(solve)(fn, logger=logger, is_hop=True, datadir='data/hop', logdir='results/hop') for fn in os.listdir('data/hop')
     )
     
     joblib.Parallel(n_jobs=4)(
-        joblib.delayed(solve)(fn, logger=logger, is_hop=False, datadir='data/hop', logdir='results/layer', creator=creator) for fn in os.listdir('data/layer')
+        joblib.delayed(solve)(fn, logger=logger, is_hop=False, datadir='data/hop', logdir='results/layer') for fn in os.listdir('data/layer')
     )
