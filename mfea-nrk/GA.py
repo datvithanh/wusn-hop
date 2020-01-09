@@ -148,10 +148,10 @@ if __name__ == "__main__":
     os.makedirs('results/hop', exist_ok=True)
     os.makedirs('results/layer', exist_ok=True)
 
-    # joblib.Parallel(n_jobs=4)(
-    #     joblib.delayed(solve)(fn, logger=logger, is_hop=True, datadir='data/hop', logdir='results/hop') for fn in os.listdir('data/hop')
-    # )
+    joblib.Parallel(n_jobs=1)(
+        joblib.delayed(solve)(fn, logger=logger, is_hop=True, datadir='data/hop', logdir='results/hop') for fn in os.listdir('data/hop')
+    )
     
-    joblib.Parallel(n_jobs=4)(
+    joblib.Parallel(n_jobs=1)(
         joblib.delayed(solve)(fn, logger=logger, is_hop=False, datadir='data/layer', logdir='results/layer') for fn in os.listdir('data/layer')
     )

@@ -74,7 +74,7 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
 
         return ind1, ind2
 
-    def mutate(ind, mu=0, sigma=0.2, indpb=0.4):
+    def mutate(ind, mu=0, sigma=0.2, indpb=1):
         size = len(ind)
 
         for i in range(size):

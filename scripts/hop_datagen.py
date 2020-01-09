@@ -95,12 +95,15 @@ if __name__ == '__main__':
         dname = os.path.split(inp_)[-1].split('.')[0]
         for r in radi:
             for i in range(args.count):
+                if not (args.prefix == 'uu-' and dname == 'dem2' and r == 25):
+                    break
+
                 fname = '%s%s_r%d_%d.json' % (args.prefix, dname, r, i+1)
                 
                 fpath = os.path.join(args.output, 'layer', fname)
 
-                if os.path.exists(fpath):
-                    continue
+                # if os.path.exists(fpath):
+                #     continue
                 logger.info('Generating %s' % fpath)
 
                 # generate random bs

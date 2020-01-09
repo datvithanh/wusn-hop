@@ -130,11 +130,12 @@ class Nrk:
                     father[v] = u
                     queue.append(v)
 
-        # exceed hop count
-        if max(hop_count) - 1 > self._hop:
-            return None, None, None
         # not a tree
         if min(hop_count[1 + self._num_of_relays:]) == 0:
+            return None, None, None
+
+        # exceed hop count
+        if max(hop_count) - 1 > self._hop:
             return None, None, None
 
         for depth in range(self._hop, 1, -1):
@@ -150,7 +151,7 @@ class Nrk:
 
     def get_loss(self, individual):
         father, num_child, hop_count = self.decode_genes(individual)
-
+     
         if None in [father, num_child]:
             return float('inf')
 
