@@ -114,26 +114,28 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
 
         flog.write(f'{father}\t{num_child}\t{obj}\n')
 
-        logger.info("Min value this pop %d : %f " % (g, min_value))
+        # logger.info("Min value this pop %d : %f " % (g, min_value))
 
     # logger.info("Finished! Best individual: %s, fitness: %s" % (best_individual, toolbox.evaluate(best_individual)))
     # return best_individual
 
 def solve(fn, logger=None, is_hop=True, datadir='data/hop', logdir='results/hop'):
+    print(f'solving {fn}')
     path = os.path.join(datadir, fn)
     flog = open(f'{logdir}/{fn[:-5]}.txt', 'w+')
 
     inp = WusnInput.from_file(path)
 
-    logger.info("prepare input data from path %s" % path)
-    logger.info("num generation: %s" % N_GENS)
-    logger.info("population size: %s" % POPULATION_SIZE)
-    logger.info("crossover probability: %s" % CXPB)
-    logger.info("mutation probability: %s" % MUTPB)
+    # logger.info("prepare input data from path %s" % path)
+    # logger.info("num generation: %s" % N_GENS)
+    # logger.info("population size: %s" % POPULATION_SIZE)
+    # logger.info("crossover probability: %s" % CXPB)
+    # logger.info("mutation probability: %s" % MUTPB)
 
     flog.write(f'{fn}\n')
 
     run(inp, flog, logger=logger, is_hop=is_hop)
+    print(f'done solved {fn}')
     
 
 if __name__ == "__main__":

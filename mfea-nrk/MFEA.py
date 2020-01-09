@@ -29,7 +29,7 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
     if logger is None:
         raise Exception("Error: logger is None!")
 
-    logger.info("Start!")
+    # logger.info("Start!")
     num_of_relays = 14
     max_hop = 8
 
@@ -39,10 +39,10 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
     def factorial_rank(pop):
         factorial_cost = [(hopConstructor.get_loss(indi), layerContructor.get_loss(hopConstructor.transform_genes(indi, layer_inp.num_of_relays))) for indi in pop]
 
-        print('hop', min([tmp[0] for tmp in factorial_cost]))
-        print('layer', min([tmp[1] for tmp in factorial_cost]))
-        print('inf hop', sum([tmp[0] > 10 for tmp in factorial_cost]))
-        print('inf layer', sum([tmp[1] > 10 for tmp in factorial_cost]))
+        # print('hop', min([tmp[0] for tmp in factorial_cost]))
+        # print('layer', min([tmp[1] for tmp in factorial_cost]))
+        # print('inf hop', sum([tmp[0] > 10 for tmp in factorial_cost]))
+        # print('inf layer', sum([tmp[1] > 10 for tmp in factorial_cost]))
         
         rank_hop = zip(np.argsort([tmp[0] for tmp in factorial_cost]), range(len(pop)))
         rank_layer = zip(np.argsort([tmp[1] for tmp in factorial_cost]), range(len(pop)))
@@ -63,11 +63,6 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
         return pop_skill_factor, pop_scalar_fitness
 
     def crossover(ind1, ind2, indpb=0.2):
-        # size = min(len(ind1), len(ind2))
-        # for i in range(size):
-        #     if np.random.random() < indpb:
-        #         ind1[i], ind2[i] = ind2[i], ind1[i]
-
         r1, r2 = np.random.randint(0, len(ind1)), np.random.randint(0, len(ind1))
         r1, r2 = min(r1, r2), max(r1, r2)
         
@@ -123,7 +118,7 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
 
 
     for g in range(N_GENS):
-        logger.info(f"Generation {g}")
+        # logger.info(f"Generation {g}")
         flog.write(f'GEN {g}\n')
 
         offspring_pop = assortive_mating(pop, pop_skill_factor)
@@ -148,25 +143,27 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
         flog.write(f'{hop_father}\t{hop_childcount}\t{hop_obj}\n{layer_father}\t{layer_childcount}\t{layer_obj}\n')
 
 def solve(fn,logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
+    print(f'solving {fn}')
     layer_fn = '_'.join(fn.split('_')[:-1]) + '.json'
 
     hop_path = os.path.join(hop_dir, fn)
     layer_path = os.path.join(layer_dir, layer_fn)
 
-    logger.info(f"prepare input data from path {hop_path} and {layer_path}")
+    # logger.info(f"prepare input data from path {hop_path} and {layer_path}")
     hop_inp = WusnInput.from_file(hop_path)
     layer_inp = WusnInput.from_file(layer_path)
-    logger.info("num generation: %s" % N_GENS)
-    logger.info("population size: %s" % POP_SIZE)
-    logger.info("crossover probability: %s" % CXPB)
-    logger.info("mutation probability: %s" % MUTPB)
-    logger.info("run GA....")
+    # logger.info("num generation: %s" % N_GENS)
+    # logger.info("population size: %s" % POP_SIZE)
+    # logger.info("crossover probability: %s" % CXPB)
+    # logger.info("mutation probability: %s" % MUTPB)
+    # logger.info("run GA....")
 
     flog = open(f'results/mfea/{fn[:-5]}.txt', 'w+')
 
     flog.write(f'{fn} {layer_fn}\n')
 
     run_ga(hop_inp, layer_inp, flog, logger)
+    print(f'done solved {fn}')
     
 
 if __name__ == '__main__':

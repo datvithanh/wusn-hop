@@ -60,13 +60,6 @@ class Nrk:
         self._edges = edges
 
     def transform_genes(self, individual, layer_sensors):
-        # selected_relays = list(
-        #     dict(sorted({i: individual[i] for i in range(1, self._num_of_relays + 1)}.items(), key=lambda x: x[1])).keys())[
-        #                  :self._max_relay]
-        
-        # binary_genes = [1 if tmp+1 in selected_relays else 0 for tmp in range(self._num_of_relays)]
-        # print(binary_genes)
-        # exit(0)
         first_half = individual[:1 + self._num_of_relays + layer_sensors]
         second_half = individual[1 + self._num_of_relays + self._num_of_sensors:2 + 2*self._num_of_relays + self._num_of_sensors + layer_sensors]
 
@@ -75,21 +68,14 @@ class Nrk:
     def decode_genes(self, individual):
         # decode tree from genes
         father = [0]*(1 + self._num_of_relays + self._num_of_sensors)
-        # print(individual)
-        # print(len(individual))
 
         dict_individual_order = {i: individual[i] for i in range(len(individual) // 2)}
-        # print('order', dict_individual_order)
         dict_individual_value = {i - len(individual) // 2: individual[i] for i in range(len(individual) // 2, len(individual))}
-        # print('value', dict_individual_value)
 
         selected_relays = list(
             dict(sorted({i: individual[i] for i in range(1, self._num_of_relays + 1)}.items(), key=lambda x: x[1])).keys())[
                          :self._max_relay]
         
-        # print(sorted({i: individual[i] for i in range(1, self._num_of_relays + 1)}.items(), key=lambda x: x[1]))
-        # print(selected_relays)
-
         not_selected_relays = [i for i in range(1, self._num_of_relays + 1) if i not in selected_relays]
 
         for pos in selected_relays:
@@ -97,9 +83,7 @@ class Nrk:
         
         order = list(dict(sorted(list(dict_individual_order.items())[self._num_of_relays+1:], key=lambda x: x[1])).keys())
 
-        # print(order)
         for sid in order:
-            # print(sid)
             dict_order_adjacent = {}
             for v in self._edges[sid]:
                 if v not in not_selected_relays:
@@ -182,9 +166,4 @@ class Nrk:
                 
                 max_energy_consumption = max(max_energy_consumption, e_t + e_r)
 
-        # if self._is_hop == False:
-        #     print(father)
-        #     print(num_child)
-        #     print(max_energy_consumption)
-        #     exit(0)
         return max_energy_consumption    
