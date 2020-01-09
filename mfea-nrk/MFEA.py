@@ -31,7 +31,7 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
 
     logger.info("Start!")
     num_of_relays = 14
-    max_hop = 6
+    max_hop = 8
 
     hopConstructor = Nrk(hop_inp, max_relay=num_of_relays, is_hop=True, hop=max_hop)
     layerContructor = Nrk(layer_inp, max_relay=num_of_relays, is_hop=False, hop=1000)

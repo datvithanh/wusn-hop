@@ -59,7 +59,7 @@ def mutate(ind, mu=0, sigma=0.2, indpb=0.4):
 
 def run(inp: WusnInput, flog, logger = None, is_hop=True):    
     max_relays = 14
-    max_hops = 6
+    max_hops = 8
 
     toolbox = base.Toolbox()
 
@@ -119,8 +119,8 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
     # logger.info("Finished! Best individual: %s, fitness: %s" % (best_individual, toolbox.evaluate(best_individual)))
     # return best_individual
 
-def solve(fn, logger=None, is_hop=True, logdir='results/hop'):
-    path = os.path.join(data_dir, fn)
+def solve(fn, logger=None, is_hop=True, datadir='data/hop', logdir='results/hop'):
+    path = os.path.join(datadir, fn)
     flog = open(f'{logdir}/{fn[:-5]}.txt', 'w+')
 
     inp = WusnInput.from_file(path)
@@ -142,9 +142,9 @@ if __name__ == "__main__":
     os.makedirs('results/layer', exist_ok=True)
 
     joblib.Parallel(n_jobs=4)(
-        joblib.delayed(solve)(fn, logger=logger, is_hop=True, logdir='results/hop') for fn in os.listdir('data/hop')
+        joblib.delayed(solve)(fn, logger=logger, is_hop=True, datadir='data/hop', logdir='results/hop') for fn in os.listdir('data/hop')
     )
     
     joblib.Parallel(n_jobs=4)(
-        joblib.delayed(solve)(fn, logger=logger, is_hop=False, logdir='results/layer') for fn in os.listdir('data/layer')
+        joblib.delayed(solve)(fn, logger=logger, is_hop=False, datadir='data/hop', logdir='results/layer') for fn in os.listdir('data/layer')
     )
