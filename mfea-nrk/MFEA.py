@@ -176,5 +176,5 @@ if __name__ == '__main__':
     layer_dir = './data/layer'
 
     joblib.Parallel(n_jobs=4)(
-        joblib.delayed(solve)(fn, logger=logger) for fn in fn in sorted(os.listdir(hop_dir))
+        joblib.delayed(solve)(fn, logger=logger) for fn in sorted(os.listdir(hop_dir))
     )
