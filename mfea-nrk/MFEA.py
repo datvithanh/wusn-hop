@@ -5,6 +5,7 @@ sys.path.append(lib_path)
 
 import random
 import numpy as np
+import joblib
 
 from utils.input import WusnInput
 from constructor.binary import Layer
@@ -146,28 +147,34 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
 
         flog.write(f'{hop_father}\t{hop_childcount}\t{hop_obj}\n{layer_father}\t{layer_childcount}\t{layer_obj}\n')
 
+def solve(fn,logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
+    layer_fn = '_'.join(fn.split('_')[:-1]) + '.json'
+
+    hop_path = os.path.join(hop_dir, fn)
+    layer_path = os.path.join(layer_dir, layer_fn)
+
+    logger.info(f"prepare input data from path {hop_path} and {layer_path}")
+    hop_inp = WusnInput.from_file(hop_path)
+    layer_inp = WusnInput.from_file(layer_path)
+    logger.info("num generation: %s" % N_GENS)
+    logger.info("population size: %s" % POP_SIZE)
+    logger.info("crossover probability: %s" % CXPB)
+    logger.info("mutation probability: %s" % MUTPB)
+    logger.info("run GA....")
+
+    flog = open(f'results/mfea/{fn[:-5]}.txt', 'w+')
+
+    flog.write(f'{fn} {layer_fn}\n')
+
+    run_ga(hop_inp, layer_inp, flog, logger)
+    
+
 if __name__ == '__main__':
     logger = init_log()
+    os.makedirs('results/mfea', exist_ok=True)
     hop_dir = './data/hop'
     layer_dir = './data/layer'
 
-    for fn in sorted(os.listdir(hop_dir)):
-        layer_fn = '_'.join(fn.split('_')[:-1]) + '.json'
-
-        hop_path = os.path.join(hop_dir, fn)
-        layer_path = os.path.join(layer_dir, layer_fn)
-
-        logger.info(f"prepare input data from path {hop_path} and {layer_path}")
-        hop_inp = WusnInput.from_file(hop_path)
-        layer_inp = WusnInput.from_file(layer_path)
-        logger.info("num generation: %s" % N_GENS)
-        logger.info("population size: %s" % POP_SIZE)
-        logger.info("crossover probability: %s" % CXPB)
-        logger.info("mutation probability: %s" % MUTPB)
-        logger.info("run GA....")
-
-        flog = open(f'logs/mfea/{fn[:-5]}.txt', 'w+')
-
-        flog.write(f'{fn} {layer_fn}\n')
-
-        run_ga(hop_inp, layer_inp, flog, logger)
+    joblib.Parallel(n_jobs=4)(
+        joblib.delayed(solve)(fn, logger=logger) for fn in fn in sorted(os.listdir(hop_dir))
+    )

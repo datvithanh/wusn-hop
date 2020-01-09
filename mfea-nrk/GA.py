@@ -6,6 +6,7 @@ from deap import base, creator, tools, algorithms
 import numpy as np
 from itertools import combinations
 import random
+import joblib
 
 from utils.input import WusnInput
 from constructor.nrk import Nrk
@@ -118,25 +119,32 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
     # logger.info("Finished! Best individual: %s, fitness: %s" % (best_individual, toolbox.evaluate(best_individual)))
     # return best_individual
 
+def solve(fn, logger=None, is_hop=True, logdir='results/hop'):
+    path = os.path.join(data_dir, fn)
+    flog = open(f'{logdir}/{fn[:-5]}.txt', 'w+')
+
+    inp = WusnInput.from_file(path)
+
+    logger.info("prepare input data from path %s" % path)
+    logger.info("num generation: %s" % N_GENS)
+    logger.info("population size: %s" % POPULATION_SIZE)
+    logger.info("crossover probability: %s" % CXPB)
+    logger.info("mutation probability: %s" % MUTPB)
+
+    flog.write(f'{fn}\n')
+
+    run(inp, flog, logger=logger, is_hop=is_hop)
+    
+
 if __name__ == "__main__":
     logger = init_log()
+    os.makedirs('results/hop', exist_ok=True)
+    os.makedirs('results/layer', exist_ok=True)
 
-    for data_dir in ['data/hop', 'data/layer']:
-        is_hop = True if data_dir == 'data/hop' else False
-        logdir = 'logs/hop' if data_dir == 'data/hop' else 'logs/layer'
-
-        for fn in os.listdir(data_dir):
-            path = os.path.join(data_dir, fn)
-            flog = open(f'{logdir}/{fn[:-5]}.txt', 'w+')
-
-            inp = WusnInput.from_file(path)
-
-            logger.info("prepare input data from path %s" % path)
-            logger.info("num generation: %s" % N_GENS)
-            logger.info("population size: %s" % POPULATION_SIZE)
-            logger.info("crossover probability: %s" % CXPB)
-            logger.info("mutation probability: %s" % MUTPB)
-
-            flog.write(f'{fn}\n')
-
-            run(inp, flog, logger=logger, is_hop=is_hop)
+    joblib.Parallel(n_jobs=4)(
+        joblib.delayed(solve)(fn, logger=logger, is_hop=True, logdir='results/hop') for fn in os.listdir('data/hop')
+    )
+    
+    joblib.Parallel(n_jobs=4)(
+        joblib.delayed(solve)(fn, logger=logger, is_hop=False, logdir='results/layer') for fn in os.listdir('data/layer')
+    )
