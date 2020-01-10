@@ -80,7 +80,8 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
     pop = toolbox.population(POPULATION_SIZE)
     best_individual = toolbox.clone(pop[0])
     # logger.info("init best individual: %s, fitness: %s" % (best_individual, toolbox.evaluate(best_individual)))
-    while True:
+    
+    for _ in range(100000):
         fitnesses = list(toolbox.map(toolbox.evaluate, pop))
         if min(fitnesses) < 1e8:
             best_individual = toolbox.clone(pop[np.argmin(fitnesses)])
