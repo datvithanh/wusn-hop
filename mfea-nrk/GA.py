@@ -154,7 +154,7 @@ if __name__ == "__main__":
     os.makedirs('results/hop', exist_ok=True)
     os.makedirs('results/layer', exist_ok=True)
 
-    rerun = ['ga-dem1_r25_1_40.json', 'ga-dem2_r50_1_40.json', 'ga-dem3_r25_1_0.json', 'ga-dem3_r50_1_40.json', 'ga-dem6_r50_1_40.json', 'no-dem10_r25_1_40.json', 'no-dem1_r50_1_40.json', 'no-dem2_r25_1_40.json', 'no-dem2_r50_1_40.json', 'no-dem4_r25_1_40.json', 'no-dem5_r50_1_40.json', 'no-dem6_r25_1_40.json', 'no-dem7_r50_1_0.json', 'no-dem9_r25_1_0.json', 'uu-dem10_r25_1_40.json', 'uu-dem1_r50_1_0.json', 'uu-dem2_r25_1_0.json', 'uu-dem2_r25_1_40.json', 'uu-dem3_r50_1_40.json', 'uu-dem5_r50_1_0.json', 'uu-dem6_r50_1_0.json', 'uu-dem7_r25_1_40.json', 'uu-dem8_r50_1_40.json', 'uu-dem9_r25_1_0.json', 'uu-dem9_r25_1_40.json']
+    rerun = ['ga-dem1_r25_1_40.json', 'ga-dem3_r25_1_0.json', 'ga-dem3_r50_1_40.json', 'ga-dem6_r50_1_40.json', 'no-dem6_r25_1_40.json', 'no-dem7_r50_1_0.json', 'uu-dem10_r25_1_40.json', 'uu-dem1_r50_1_0.json', 'uu-dem2_r25_1_0.json', 'uu-dem3_r50_1_40.json', 'uu-dem7_r25_1_40.json', 'uu-dem8_r50_1_40.json', 'uu-dem9_r25_1_40.json']
 
     joblib.Parallel(n_jobs=4)(
         # joblib.delayed(solve)(fn, logger=logger, is_hop=True, datadir='data/hop', logdir='results/hop') for fn in os.listdir('data/hop')
