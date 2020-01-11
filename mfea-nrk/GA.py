@@ -81,13 +81,12 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
     best_individual = toolbox.clone(pop[0])
     # logger.info("init best individual: %s, fitness: %s" % (best_individual, toolbox.evaluate(best_individual)))
     
-    for i in range(100):
-        print(i)
+    for _ in range(100):
         fitnesses = list(toolbox.map(toolbox.evaluate, pop))
         if min(fitnesses) < 1e8:
             best_individual = toolbox.clone(pop[np.argmin(fitnesses)])
             break
-    print('alsdlsl')
+        
     for g in range(N_GENS):
         # Selection
         offsprings = map(toolbox.clone, toolbox.select(pop, len(pop) - 1))
