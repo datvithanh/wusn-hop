@@ -123,17 +123,17 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
         father, num_child, _ = constructor.decode_genes(best_individual)
         obj = constructor.get_loss(best_individual)
 
-        flog.write(f'{father}\t{num_child}\t{obj}\n')
+        flog.write(f'{best_individual}\t{father}\t{num_child}\t{obj}\n')
 
         # logger.info("Min value this pop %d : %f " % (g, min_value))
 
     # logger.info("Finished! Best individual: %s, fitness: %s" % (best_individual, toolbox.evaluate(best_individual)))
     # return best_individual
 
-def solve(fn, logger=None, is_hop=True, datadir='data/hop', logdir='results/hop'):
+def solve(fn, pas=1, logger=None, is_hop=True, datadir='data/hop', logdir='results/hop'):
     print(f'solving {fn}')
     path = os.path.join(datadir, fn)
-    flog = open(f'{logdir}/{fn[:-5]}.txt', 'w+')
+    flog = open(f'{logdir}/{fn[:-5]}_{pas}.txt', 'w+')
 
     inp = WusnInput.from_file(path)
 
@@ -154,16 +154,16 @@ if __name__ == "__main__":
     os.makedirs('results/hop', exist_ok=True)
     os.makedirs('results/layer', exist_ok=True)
 
-    rerun = ['ga-dem1_r25_1_40.json', 'ga-dem3_r25_1_0.json', 'ga-dem3_r50_1_40.json', 'ga-dem6_r50_1_40.json', 'no-dem6_r25_1_40.json', 'no-dem7_r50_1_0.json', 'uu-dem10_r25_1_40.json', 'uu-dem1_r50_1_0.json', 'uu-dem2_r25_1_0.json', 'uu-dem3_r50_1_40.json', 'uu-dem7_r25_1_40.json', 'uu-dem8_r50_1_40.json', 'uu-dem9_r25_1_40.json']
+    for i in range(10):
+    # rerun = ['ga-dem1_r25_1_40.json', 'ga-dem3_r25_1_0.json', 'ga-dem3_r50_1_40.json', 'ga-dem6_r50_1_40.json', 'no-dem6_r25_1_40.json', 'no-dem7_r50_1_0.json', 'uu-dem10_r25_1_40.json', 'uu-dem1_r50_1_0.json', 'uu-dem2_r25_1_0.json', 'uu-dem3_r50_1_40.json', 'uu-dem7_r25_1_40.json', 'uu-dem8_r50_1_40.json', 'uu-dem9_r25_1_40.json']
+        joblib.Parallel(n_jobs=8)(
+            joblib.delayed(solve)(fn, pas=i, logger=logger, is_hop=True, datadir='data/hop', logdir='results/hop') for fn in os.listdir('data/hop')
+            # joblib.delayed(solve)(fn, logger=logger, is_hop=True, datadir='data/hop', logdir='results/hop') for fn in rerun
+        )
 
-    joblib.Parallel(n_jobs=4)(
-        # joblib.delayed(solve)(fn, logger=logger, is_hop=True, datadir='data/hop', logdir='results/hop') for fn in os.listdir('data/hop')
-        joblib.delayed(solve)(fn, logger=logger, is_hop=True, datadir='data/hop', logdir='results/hop') for fn in rerun
-    )
-
-    rerun = []
-    
-    joblib.Parallel(n_jobs=4)(
-        # joblib.delayed(solve)(fn, logger=logger, is_hop=False, datadir='data/layer', logdir='results/layer') for fn in os.listdir('data/layer')
-        joblib.delayed(solve)(fn, logger=logger, is_hop=False, datadir='data/layer', logdir='results/layer') for fn in rerun
-    )
+        # rerun = []
+        
+        joblib.Parallel(n_jobs=8)(
+            joblib.delayed(solve)(fn, pas=i, logger=logger, is_hop=False, datadir='data/layer', logdir='results/layer') for fn in os.listdir('data/layer')
+            # joblib.delayed(solve)(fn, logger=logger, is_hop=False, datadir='data/layer', logdir='results/layer') for fn in rerun
+        )

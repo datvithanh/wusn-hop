@@ -140,9 +140,9 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
         hop_father, hop_childcount, _ = hopConstructor.decode_genes(hop_individual)
         layer_father, layer_childcount, _ = layerContructor.decode_genes(hopConstructor.transform_genes(layer_individual, layer_inp.num_of_sensors))
 
-        flog.write(f'{hop_father}\t{hop_childcount}\t{hop_obj}\n{layer_father}\t{layer_childcount}\t{layer_obj}\n')
+        flog.write(f'{hop_individual}\t{hop_father}\t{hop_childcount}\t{hop_obj}\n{hopConstructor.transform_genes(layer_individual, layer_inp.num_of_sensors)}\t{layer_father}\t{layer_childcount}\t{layer_obj}\n')
 
-def solve(fn,logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
+def solve(fn, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
     print(f'solving {fn}')
     layer_fn = '_'.join(fn.split('_')[:-1]) + '.json'
 
@@ -158,7 +158,7 @@ def solve(fn,logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
     # logger.info("mutation probability: %s" % MUTPB)
     # logger.info("run GA....")
 
-    flog = open(f'results/mfea/{fn[:-5]}.txt', 'w+')
+    flog = open(f'results/mfea/{fn[:-5]}_{pas}.txt', 'w+')
 
     flog.write(f'{fn} {layer_fn}\n')
 
@@ -172,7 +172,8 @@ if __name__ == '__main__':
     hop_dir = './data/hop'
     layer_dir = './data/layer'
 
-    joblib.Parallel(n_jobs=4)(
-        # joblib.delayed(solve)(fn, logger=logger) for fn in sorted(os.listdir(hop_dir))
-        joblib.delayed(solve)(fn, logger=logger) for fn in sorted(['ga-dem2_r25_1_0.json', 'ga-dem2_r25_1_40.json', 'ga-dem4_r25_1_0.json', 'ga-dem4_r25_1_40.json'])
-    )
+    for i in range(10):
+        joblib.Parallel(n_jobs=16)(
+            joblib.delayed(solve)(fn, pas=i, logger=logger) for fn in sorted(os.listdir(hop_dir))
+            # joblib.delayed(solve)(fn, logger=logger) for fn in sorted(['ga-dem2_r25_1_0.json', 'ga-dem2_r25_1_40.json', 'ga-dem4_r25_1_0.json', 'ga-dem4_r25_1_40.json'])
+        )
