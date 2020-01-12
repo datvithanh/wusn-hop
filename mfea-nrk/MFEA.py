@@ -143,7 +143,7 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
         flog.write(f'{hop_individual}\t{hop_father}\t{hop_childcount}\t{hop_obj}\n{hopConstructor.transform_genes(layer_individual, layer_inp.num_of_sensors)}\t{layer_father}\t{layer_childcount}\t{layer_obj}\n')
 
 def solve(fn, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
-    print(f'solving {fn}')
+    print(f'solving {fn} pas {pas}')
     layer_fn = '_'.join(fn.split('_')[:-1]) + '.json'
 
     hop_path = os.path.join(hop_dir, fn)
@@ -173,7 +173,7 @@ if __name__ == '__main__':
     layer_dir = './data/layer'
 
     for i in range(10):
-        joblib.Parallel(n_jobs=16)(
+        joblib.Parallel(n_jobs=8)(
             joblib.delayed(solve)(fn, pas=i, logger=logger) for fn in sorted(os.listdir(hop_dir))
             # joblib.delayed(solve)(fn, logger=logger) for fn in sorted(['ga-dem2_r25_1_0.json', 'ga-dem2_r25_1_40.json', 'ga-dem4_r25_1_0.json', 'ga-dem4_r25_1_40.json'])
         )

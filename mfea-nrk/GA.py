@@ -131,7 +131,7 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
     # return best_individual
 
 def solve(fn, pas=1, logger=None, is_hop=True, datadir='data/hop', logdir='results/hop'):
-    print(f'solving {fn}')
+    print(f'solving {fn} pas {pas}')
     path = os.path.join(datadir, fn)
     flog = open(f'{logdir}/{fn[:-5]}_{pas}.txt', 'w+')
 
