@@ -6,6 +6,7 @@ sys.path.append(lib_path)
 import random
 import numpy as np
 import joblib
+import time
 
 from utils.input import WusnInput
 from constructor.binary import Layer
@@ -119,7 +120,7 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
 
     for g in range(N_GENS):
         # logger.info(f"Generation {g}")
-        flog.write(f'GEN {g}\n')
+        flog.write(f'GEN {g} time {int(time.time())}\n')
 
         offspring_pop = assortive_mating(pop, pop_skill_factor)
         

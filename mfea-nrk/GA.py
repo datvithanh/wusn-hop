@@ -7,6 +7,7 @@ import numpy as np
 from itertools import combinations
 import random
 import joblib
+import time
 
 from utils.input import WusnInput
 from constructor.nrk import Nrk
@@ -88,6 +89,7 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
             break
         
     for g in range(N_GENS):
+        flog.write(f'GEN {g} time {int(time.time())}\n')
         # Selection
         offsprings = map(toolbox.clone, toolbox.select(pop, len(pop) - 1))
         # Produce offsprings
