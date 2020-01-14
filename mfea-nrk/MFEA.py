@@ -173,8 +173,21 @@ if __name__ == '__main__':
     hop_dir = './data/hop'
     layer_dir = './data/layer'
 
+    # for i in range(10):
+    #     joblib.Parallel(n_jobs=8)(
+    #         joblib.delayed(solve)(fn, pas=i, logger=logger) for fn in sorted(os.listdir(hop_dir))
+    #     )
+
+    rerun = set([tmp.replace('\n', '') for tmp in open('rerunm.txt', 'r').readlines()])
+
+    pases = []
+    tests = []
     for i in range(10):
-        joblib.Parallel(n_jobs=8)(
-            joblib.delayed(solve)(fn, pas=i, logger=logger) for fn in sorted(os.listdir(hop_dir))
-            # joblib.delayed(solve)(fn, logger=logger) for fn in sorted(['ga-dem2_r25_1_0.json', 'ga-dem2_r25_1_40.json', 'ga-dem4_r25_1_0.json', 'ga-dem4_r25_1_40.json'])
-        )
+        rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
+
+        tests = tests + rerun_hop
+        pases = pases + [i] * len(rerun_hop)
+
+    joblib.Parallel(n_jobs=8)(
+        joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
+    )
