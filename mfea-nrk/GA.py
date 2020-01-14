@@ -156,16 +156,35 @@ if __name__ == "__main__":
     os.makedirs('results/hop', exist_ok=True)
     os.makedirs('results/layer', exist_ok=True)
 
-    for i in range(10):
-    # rerun = ['ga-dem1_r25_1_40.json', 'ga-dem3_r25_1_0.json', 'ga-dem3_r50_1_40.json', 'ga-dem6_r50_1_40.json', 'no-dem6_r25_1_40.json', 'no-dem7_r50_1_0.json', 'uu-dem10_r25_1_40.json', 'uu-dem1_r50_1_0.json', 'uu-dem2_r25_1_0.json', 'uu-dem3_r50_1_40.json', 'uu-dem7_r25_1_40.json', 'uu-dem8_r50_1_40.json', 'uu-dem9_r25_1_40.json']
-        joblib.Parallel(n_jobs=8)(
-            joblib.delayed(solve)(fn, pas=i, logger=logger, is_hop=True, datadir='data/hop', logdir='results/hop') for fn in os.listdir('data/hop')
-            # joblib.delayed(solve)(fn, logger=logger, is_hop=True, datadir='data/hop', logdir='results/hop') for fn in rerun
-        )
+    # for i in range(10):
+    #     joblib.Parallel(n_jobs=8)(
+    #         joblib.delayed(solve)(fn, pas=i, logger=logger, is_hop=True, datadir='data/hop', logdir='results/hop') for fn in os.listdir('data/hop')
+    #     )
 
-        # rerun = []
-        
-        joblib.Parallel(n_jobs=8)(
-            joblib.delayed(solve)(fn, pas=i, logger=logger, is_hop=False, datadir='data/layer', logdir='results/layer') for fn in os.listdir('data/layer')
-            # joblib.delayed(solve)(fn, logger=logger, is_hop=False, datadir='data/layer', logdir='results/layer') for fn in rerun
-        )
+    #     joblib.Parallel(n_jobs=8)(
+    #         joblib.delayed(solve)(fn, pas=i, logger=logger, is_hop=False, datadir='data/layer', logdir='results/layer') for fn in os.listdir('data/layer')
+    #     )
+
+    rerun = set([tmp.replace('\n', '') for tmp in open('rerun.txt', 'r').readlines()])
+    pases = []
+    tests = []
+    is_hops = []
+
+    for i in range(10):
+        rerun_hop = [tmp for tmp in os.listdir('data/hop') if f'{tmp[:-5]}_{i}.txt' in rerun]
+
+        tests = tests + rerun_hop
+        is_hops = is_hops + ['hop'] * len(rerun_hop)
+        pases = pases + [i] * len(rerun_hop)
+
+        rerun_layer = [tmp for tmp in os.listdir('data/layer') if f'{tmp[:-5]}_{i}.txt' in rerun]
+
+        tests = tests + rerun_layer
+        is_hops = is_hops + ['layer'] * len(rerun_layer)
+        pases = pases + [i] * len(rerun_layer)
+
+    joblib.Parallel(n_jobs=8)(
+        joblib.delayed(solve)(fn, pas=pas, logger=logger, is_hop=True if is_hop == 'hop' else False, datadir=f'data/{is_hop}', logdir=f'results/{is_hop}') for \
+            (pas, is_hop, fn) in zip(pases, is_hops, tests)
+    )
+
