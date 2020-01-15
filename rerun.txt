@@ -1,11 +1,8 @@
 uu-dem2_r25_1_5.txt
 uu-dem2_r25_1_4.txt
-uu-dem3_r50_1_6.txt
 uu-dem3_r50_1_7.txt
 uu-dem3_r50_1_3.txt
 uu-dem3_r50_1_0.txt
-uu-dem3_r50_1_1.txt
-ga-dem7_r25_1_6.txt
 uu-dem8_r25_1_5.txt
 uu-dem8_r25_1_1.txt
 uu-dem4_r25_1_2.txt
@@ -26,7 +23,6 @@ ga-dem3_r25_1_5.txt
 ga-dem3_r25_1_4.txt
 ga-dem3_r25_1_9.txt
 ga-dem3_r25_1_8.txt
-no-dem2_r25_1_7.txt
 uu-dem6_r25_1_6.txt
 ga-dem8_r25_1_8.txt
 ga-dem8_r25_1_1.txt
@@ -36,8 +32,6 @@ ga-dem4_r25_1_9.txt
 ga-dem4_r25_1_6.txt
 ga-dem4_r25_1_0.txt
 ga-dem4_r25_1_1.txt
-ga-dem10_r50_1_40_7.txt
-uu-dem1_r25_1_40_6.txt
 ga-dem10_r25_1_40_8.txt
 ga-dem10_r25_1_40_9.txt
 ga-dem10_r25_1_40_4.txt
