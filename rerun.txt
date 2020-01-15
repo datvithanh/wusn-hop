@@ -1,9 +1,7 @@
-uu-dem4_r25_1_2.txt
-uu-dem4_r25_1_3.txt
-uu-dem4_r25_1_1.txt
-uu-dem4_r25_1_0.txt
-uu-dem4_r25_1_4.txt
-uu-dem4_r25_1_5.txt
-uu-dem4_r25_1_7.txt
-uu-dem4_r25_1_6.txt
-uu-dem4_r25_1_9.txt
+ga-dem3_r25_1_0.txt
+ga-dem3_r25_1_3.txt
+ga-dem3_r25_1_6.txt
+ga-dem3_r25_1_7.txt
+ga-dem3_r25_1_5.txt
+ga-dem3_r25_1_9.txt
+ga-dem3_r25_1_8.txt
