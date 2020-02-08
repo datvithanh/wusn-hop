@@ -59,9 +59,9 @@ class Nrk:
         self._point2idx = point2idx
         self._edges = edges
 
-    def transform_genes(self, individual, layer_sensors):
-        first_half = individual[:1 + self._num_of_relays + layer_sensors]
-        second_half = individual[1 + self._num_of_relays + self._num_of_sensors:2 + 2*self._num_of_relays + self._num_of_sensors + layer_sensors]
+    def transform_genes(self, individual, num_of_sensors, max_rl, max_ss):
+        first_half = individual[:1 + max_rl + num_of_sensors]
+        second_half = individual[1 + max_rl + max_ss:2 + 2*max_rl + max_ss + num_of_sensors]
 
         return first_half + second_half
     

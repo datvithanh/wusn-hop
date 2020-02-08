@@ -26,7 +26,7 @@ def init_individual(num_of_relays, num_of_sensors):
 
     return individual
 
-def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
+def run_ga(fns, flog, logger=None):
     if logger is None:
         raise Exception("Error: logger is None!")
 
@@ -34,31 +34,42 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
     num_of_relays = 14
     max_hop = 8
 
-    hopConstructor = Nrk(hop_inp, max_relay=num_of_relays, is_hop=True, hop=max_hop)
-    layerContructor = Nrk(layer_inp, max_relay=num_of_relays, is_hop=False, hop=1000)
+    num_tasks = len(fns)
+    inputs = []
+    constructors = []
+    for fn in fns:
+        inputs.append(WusnInput.from_file(fn))
+        if 'layer' in fn:
+            constructors.append(Nrk(inputs[-1], max_relay=num_of_relays, is_hop=False, hop=1000))
+        else:
+            constructors.append(Nrk(inputs[-1], max_relay=num_of_relays, is_hop=True, hop=max_hop))
+
+    num_of_relays = max([inp.num_of_relays for inp in inputs])
+    num_of_sensors = max([inp.num_of_sensors for inp in inputs])
+
+    def transform_genes(individual, task_sensors):
+        first_half = individual[:1 + num_of_relays + task_sensors]
+        second_half = individual[1 + num_of_relays + num_of_sensors:2 + 2*num_of_relays + num_of_sensors + task_sensors]
+
+        return first_half + second_half
 
     def factorial_rank(pop):
-        factorial_cost = [(hopConstructor.get_loss(indi), layerContructor.get_loss(hopConstructor.transform_genes(indi, layer_inp.num_of_relays))) for indi in pop]
+        factorial_cost = [[constructor.get_loss(transform_genes(indi, inp.num_of_sensors)) for constructor, inp in zip(constructors, inputs)] for indi in pop]
 
-        # print('hop', min([tmp[0] for tmp in factorial_cost]))
-        # print('layer', min([tmp[1] for tmp in factorial_cost]))
-        # print('inf hop', sum([tmp[0] > 10 for tmp in factorial_cost]))
-        # print('inf layer', sum([tmp[1] > 10 for tmp in factorial_cost]))
-        
-        rank_hop = zip(np.argsort([tmp[0] for tmp in factorial_cost]), range(len(pop)))
-        rank_layer = zip(np.argsort([tmp[1] for tmp in factorial_cost]), range(len(pop)))
+        ranks = []
+        for task in range(num_tasks):
+            rank = zip(np.argsort([tmp[task] for tmp in factorial_cost]), range(len(pop)))
+            rank = [tmp[-1] for tmp in sorted(rank, key=lambda x: x[0])]
+            ranks.append(rank)
 
-        rank_hop = [tmp[-1] for tmp in sorted(rank_hop, key=lambda x: x[0])]
-        rank_layer = [tmp[-1] for tmp in sorted(rank_layer, key=lambda x: x[0])]
-
-        factorial_rank = [rank_hop, rank_layer]
-        return factorial_rank
+        return ranks
 
     def skill_factor(pop):
         pop_factorial_rank = factorial_rank(pop)
-        pop_skill_factor = [0 if pop_factorial_rank[0][i] <= pop_factorial_rank[1][i] else 1 for i in range(len(pop))]
 
-        pop_scalar_fitness = [1/(min(pop_factorial_rank[0][i] + 1, pop_factorial_rank[1][i] + 1)) for i in range(len(pop))]
+        pop_skill_factor = [np.argmax([pop_factorial_rank[task][i] for task in range(num_tasks)]) for i in range(len(pop))]
+
+        pop_scalar_fitness = [1/(min([pop_factorial_rank[task][i] for task in range(num_tasks)]) + 1) for i in range(len(pop))]
 
         # factorial rank << -> scalar fitness >> 
         return pop_skill_factor, pop_scalar_fitness
@@ -102,14 +113,17 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
     def selection(pop, pop_skill_factor, pop_scalar_fitness):
         ranking = sorted([(idx, value) for idx, value in enumerate(pop_scalar_fitness)], key=lambda x: -x[-1])
         new_pop, new_pop_skill_factor = [], []
-        
+
         for i in range(POP_SIZE):
             new_pop.append(pop[ranking[i][0]])
             new_pop_skill_factor.append(pop_skill_factor[ranking[i][0]])
 
         return new_pop, new_pop_skill_factor
 
-    pop = [init_individual(hop_inp.num_of_relays, hop_inp.num_of_sensors) for _ in range(POP_SIZE)]
+    num_of_relays = max([inp.num_of_relays for inp in inputs])
+    num_of_sensors = max([inp.num_of_sensors for inp in inputs])
+
+    pop = [init_individual(num_of_relays, num_of_sensors) for _ in range(POP_SIZE)]
 
     pop_skill_factor, _ = skill_factor(pop)
 
@@ -119,7 +133,6 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
 
 
     for g in range(N_GENS):
-        # logger.info(f"Generation {g}")
         flog.write(f'GEN {g} time {int(time.time())}\n')
 
         offspring_pop = assortive_mating(pop, pop_skill_factor)
@@ -130,41 +143,41 @@ def run_ga(hop_inp: WusnInput, layer_inp: WusnInput, flog, logger=None):
 
         pop, pop_skill_factor = selection(immediate_pop, pop_skill_factor, pop_scalar_fitness)
 
-        if pop_skill_factor[0] == 0:
-            hop_individual, layer_individual = pop[0], pop[1]
-        else:
-            hop_individual, layer_individual = pop[1], pop[0]
+        best_indis = [None] * num_tasks
+        for i in range(num_tasks):
+            for j in range(POP_SIZE):
+                if pop_skill_factor[j] == i:
+                    best_indis[i] = pop[j]
+                    break
 
-        hop_obj = hopConstructor.get_loss(hop_individual)
-        layer_obj = layerContructor.get_loss(hopConstructor.transform_genes(layer_individual, layer_inp.num_of_sensors))
+        genes = [transform_genes(indi, inp.num_of_sensors) \
+            for indi, inp in zip(best_indis, inputs)]
+        best_objs = [constructor.get_loss(transform_genes(indi, inp.num_of_sensors)) \
+            for indi, constructor, inp in zip(best_indis, constructors, inputs)]
+        infos = [constructor.decode_genes(transform_genes(indi, inp.num_of_sensors)) \
+            for indi, constructor, inp in zip(best_indis, constructors, inputs)]
 
-        hop_father, hop_childcount, _ = hopConstructor.decode_genes(hop_individual)
-        layer_father, layer_childcount, _ = layerContructor.decode_genes(hopConstructor.transform_genes(layer_individual, layer_inp.num_of_sensors))
+        for task in range(num_tasks):
+            flog.write(f'{best_indis[task]}\t{infos[task][0]}\t{infos[task][1]}\t{best_objs[task]}\n')
 
-        flog.write(f'{hop_individual}\t{hop_father}\t{hop_childcount}\t{hop_obj}\n{hopConstructor.transform_genes(layer_individual, layer_inp.num_of_sensors)}\t{layer_father}\t{layer_childcount}\t{layer_obj}\n')
+def solve(fns, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
+    print(f'solving {fns} pas {pas}')
 
-def solve(fn, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
-    print(f'solving {fn} pas {pas}')
-    layer_fn = '_'.join(fn.split('_')[:-1]) + '.json'
-
-    hop_path = os.path.join(hop_dir, fn)
-    layer_path = os.path.join(layer_dir, layer_fn)
+    # inps = [WusnInput.from_file(tmp) for tmp in fns]
 
     # logger.info(f"prepare input data from path {hop_path} and {layer_path}")
-    hop_inp = WusnInput.from_file(hop_path)
-    layer_inp = WusnInput.from_file(layer_path)
     # logger.info("num generation: %s" % N_GENS)
     # logger.info("population size: %s" % POP_SIZE)
     # logger.info("crossover probability: %s" % CXPB)
     # logger.info("mutation probability: %s" % MUTPB)
     # logger.info("run GA....")
 
-    flog = open(f'results/mfea/{fn[:-5]}_{pas}.txt', 'w+')
+    flog = open(f"results/mfea/{fns[1].split('/')[-1][:-5]}_{pas}.txt", 'w+')
 
-    flog.write(f'{fn} {layer_fn}\n')
+    flog.write(f'{fns}\n')
 
-    run_ga(hop_inp, layer_inp, flog, logger)
-    print(f'done solved {fn}')
+    run_ga(fns, flog, logger)
+    print(f'done solved {fns[1]}')
     
 
 if __name__ == '__main__':
@@ -178,16 +191,39 @@ if __name__ == '__main__':
     #         joblib.delayed(solve)(fn, pas=i, logger=logger) for fn in sorted(os.listdir(hop_dir))
     #     )
 
-    rerun = set([tmp.replace('\n', '') for tmp in open('rerunm.txt', 'r').readlines()])
+    rerun = set([tmp.replace('\n', '') for tmp in open('mfea_tests.txt', 'r').readlines()])
 
+    hop_dir='./data/hop'
+    layer_dir='./data/layer'
     pases = []
     tests = []
+    # 1 single 3 multi
     for i in range(10):
         rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
+        sets = []
+        for j in rerun_hop:
+            single = '_'.join(j.split('_')[:-1]) + '.json'
 
-        tests = tests + rerun_hop
+            r = int(j.split('_')[-3][1:])
+            ss = int(j.split('_')[-1][:-5])
+
+            splt = j.split('_')
+            splt[-1] = str(40-ss) + '.json'
+            multi2 = '_'.join(splt)
+            
+            splt[-1] = str(ss) + '.json'
+            splt[-3] = 'r' + str(75-r)
+            multi3 = '_'.join(splt)
+            
+            single = os.path.join(layer_dir, single)
+            multi1 = os.path.join(hop_dir, j)
+            multi2 = os.path.join(hop_dir, multi2)
+            multi3 = os.path.join(hop_dir, multi3)
+            tests.append([single, multi1, multi2, multi3])
+
         pases = pases + [i] * len(rerun_hop)
 
+    # tests = tests[:1]
     joblib.Parallel(n_jobs=8)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
     )
