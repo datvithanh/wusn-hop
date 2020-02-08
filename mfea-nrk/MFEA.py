@@ -150,15 +150,13 @@ def run_ga(fns, flog, logger=None):
                     best_indis[i] = pop[j]
                     break
 
-        genes = [transform_genes(indi, inp.num_of_sensors) \
-            for indi, inp in zip(best_indis, inputs)]
         best_objs = [constructor.get_loss(transform_genes(indi, inp.num_of_sensors)) \
             for indi, constructor, inp in zip(best_indis, constructors, inputs)]
-        infos = [constructor.decode_genes(transform_genes(indi, inp.num_of_sensors)) \
-            for indi, constructor, inp in zip(best_indis, constructors, inputs)]
+        # infos = [constructor.decode_genes(transform_genes(indi, inp.num_of_sensors)) \
+        #     for indi, constructor, inp in zip(best_indis, constructors, inputs)]
 
         for task in range(num_tasks):
-            flog.write(f'{best_indis[task]}\t{infos[task][0]}\t{infos[task][1]}\t{best_objs[task]}\n')
+            flog.write(f'{best_objs[task]}\n')
 
 def solve(fns, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
     print(f'solving {fns} pas {pas}')
