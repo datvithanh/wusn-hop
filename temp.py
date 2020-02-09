@@ -2,7 +2,7 @@ import os
 dirs = sorted(os.listdir('data/hop'))
 examples = []
 for fn in dirs: 
-    for i in range(4): 
+    for i in range(5): 
         examples.append(f'{fn[:-5]}_{i}.txt')
         
 with open('rerunm.txt', 'w+') as f:

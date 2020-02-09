@@ -13,7 +13,7 @@ from constructor.binary import Layer
 from constructor.nrk import Nrk
 from utils.logger import init_log
 
-N_GENS = 5
+N_GENS = 100
 POP_SIZE = 300
 CXPB = 0.8
 MUTPB = 0.2
@@ -227,6 +227,6 @@ if __name__ == '__main__':
     # for i in range(10):
 
     # tests = tests[:1]
-    joblib.Parallel(n_jobs=1)(
+    joblib.Parallel(n_jobs=8)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
     )
