@@ -149,6 +149,8 @@ def run_ga(fns, flog, logger=None):
                 if pop_skill_factor[j] == i:
                     best_indis[i] = pop[j]
                     break
+            if not best_indis[i]:
+                best_indis[i] = pop[0]
 
         best_objs = [constructor.get_loss(transform_genes(indi, inp.num_of_sensors)) \
             for indi, constructor, inp in zip(best_indis, constructors, inputs)]
