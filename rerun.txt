@@ -1,7 +1,0 @@
-ga-dem3_r25_1_0.txt
-ga-dem3_r25_1_3.txt
-ga-dem3_r25_1_6.txt
-ga-dem3_r25_1_7.txt
-ga-dem3_r25_1_5.txt
-ga-dem3_r25_1_9.txt
-ga-dem3_r25_1_8.txt
