@@ -67,7 +67,7 @@ def run_ga(fns, flog, logger=None):
     def skill_factor(pop):
         pop_factorial_rank = factorial_rank(pop)
 
-        pop_skill_factor = [np.argmax([pop_factorial_rank[task][i] for task in range(num_tasks)]) for i in range(len(pop))]
+        pop_skill_factor = [np.argmin([pop_factorial_rank[task][i] for task in range(num_tasks)]) for i in range(len(pop))]
 
         pop_scalar_fitness = [1/(min([pop_factorial_rank[task][i] for task in range(num_tasks)]) + 1) for i in range(len(pop))]
 
@@ -222,6 +222,9 @@ if __name__ == '__main__':
             tests.append([single, multi1, multi2, multi3])
 
         pases = pases + [i] * len(rerun_hop)
+
+    # 3 single 1 multi
+    # for i in range(10):
 
     # tests = tests[:1]
     joblib.Parallel(n_jobs=8)(
