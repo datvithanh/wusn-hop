@@ -172,7 +172,7 @@ def solve(fns, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer
     # logger.info("mutation probability: %s" % MUTPB)
     # logger.info("run GA....")
     if os.path.exists(f"results/mfea/{fns[1].split('/')[-1][:-5]}_{pas}.txt"):
-        print(f"existed {fn[1]}")
+        print(f"existed {fns[1]}")
         return
 
     flog = open(f"results/mfea/{fns[1].split('/')[-1][:-5]}_{pas}.txt", 'w+')
