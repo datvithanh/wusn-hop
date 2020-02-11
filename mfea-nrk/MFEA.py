@@ -259,8 +259,6 @@ if __name__ == '__main__':
 
         pases = pases + [i] * len(rerun_hop)
 
-    print(tests[1])
-
-    # joblib.Parallel(n_jobs=8)(
-    #     joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
-    # )
+    joblib.Parallel(n_jobs=8)(
+        joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
+    )
