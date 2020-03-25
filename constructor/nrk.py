@@ -157,6 +157,8 @@ class Nrk:
 
         max_energy_consumption = 0
 
+        print(num_child)
+        
         for index, value in enumerate(hop_count):
             if value > 0:
                 if index == 0:

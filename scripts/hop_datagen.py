@@ -35,16 +35,22 @@ def parse_arguments():
 
 def point(dinp, xrange, yrange, z_off=0, cls=Point, distribution="uniform"):
     epsilon = 1e-3
-    #distribution = {uniform, gaussian, gamma}
+
+    # print(distribution, )
+
     if distribution == "uniform":
         x = np.random.uniform(*xrange)
         y = np.random.uniform(*yrange)
     
     if distribution == "gaussian":
+        print(distribution, xrange[1]/2, xrange[1]/4)
+
         x = np.clip(np.random.normal(xrange[1]/2, xrange[1]/4), xrange[0], xrange[1]-epsilon)
         y = np.clip(np.random.normal(yrange[1]/2, yrange[1]/4), yrange[0], yrange[1]-epsilon)
 
     if distribution == "gamma":
+        print(distribution, np.random.gamma(2, 1.5) ,xrange[1], yrange[1])
+
         x = np.clip(np.random.gamma(2, 1.5)*xrange[1]/10, xrange[0], xrange[1]-epsilon)
         y = np.clip(np.random.gamma(2, 1.5)*yrange[1]/10, yrange[0], yrange[1]-epsilon)
 
@@ -87,7 +93,7 @@ def hop_is_covered(sn, bs_, relays_, sensors_, radius):
 if __name__ == '__main__':
     args = parse_arguments()
     os.makedirs(args.output, exist_ok=True)
-    print(args.distribution)
+
     radi = list(map(lambda x: int(x), args.radius.split(',')))
     for inp_ in args.dems:
         dem = DemsInput.from_file(inp_)
@@ -96,9 +102,6 @@ if __name__ == '__main__':
         for r in radi:
             for i in range(args.count):
                 fname = '%s%s_r%d_%d.json' % (args.prefix, dname, r, i+1)
-
-                if fname not in ['ga-dem2_r25_1.json', 'ga-dem4_r25_1.json']:
-                    continue
                 
                 fpath = os.path.join(args.output, 'layer', fname)
 
@@ -158,7 +161,8 @@ if __name__ == '__main__':
                                 _sensors=sensors, _BS=bs, _radius=r)
 
                 fpath = os.path.join(args.output, 'hop', '%s%s_r%d_%d_40.json' % (args.prefix, dname, r, i+1))
-                res.to_file(fpath)
-
+                # res.to_file(fpath)
+            break
+        break
                 
     logger.info('Done')
