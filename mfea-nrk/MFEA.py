@@ -298,6 +298,6 @@ if __name__ == '__main__':
 
     tests, pases = instances(3,1)
     
-    joblib.Parallel(n_jobs=1)(
+    joblib.Parallel(n_jobs=8)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
     )
