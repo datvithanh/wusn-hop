@@ -246,6 +246,8 @@ def instances(single, multi):
                     continue
                 single1, single2, single3 = './data/layer/uu-dem6_r25_1.json', './data/layer/uu-dem6_r50_1.json', './data/layer/uu-dem5_r50_1.json'
                 multi = j[:-5] + '_40.json'
+                multi = os.path.join(hop_dir, multi)
+
                 pases.append(i+5)
                 # outlier
                 tests.append([single1, single2, single3, multi])
