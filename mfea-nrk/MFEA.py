@@ -295,10 +295,7 @@ if __name__ == '__main__':
     os.makedirs('results/mfea', exist_ok=True)
 
     tests, pases = instances(3,1)
-    for i in tests:
-        print(i)
-    print(pases)
-    print(len(tests), len(pases))
-    # joblib.Parallel(n_jobs=1)(
-    #     joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
-    # )
+    
+    joblib.Parallel(n_jobs=1)(
+        joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
+    )
