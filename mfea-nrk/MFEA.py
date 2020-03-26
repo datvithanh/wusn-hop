@@ -154,8 +154,6 @@ def run_ga(fns, flog, logger=None):
 
         best_objs = [constructor.get_loss(transform_genes(indi, inp.num_of_sensors)) \
             for indi, constructor, inp in zip(best_indis, constructors, inputs)]
-        # infos = [constructor.decode_genes(transform_genes(indi, inp.num_of_sensors)) \
-        #     for indi, constructor, inp in zip(best_indis, constructors, inputs)]
 
         for task in range(num_tasks):
             flog.write(f'{best_objs[task]}\n')
@@ -171,7 +169,7 @@ def solve(fns, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer
     # logger.info("crossover probability: %s" % CXPB)
     # logger.info("mutation probability: %s" % MUTPB)
     # logger.info("run GA....")
-    if os.path.exists(f"results/mfea/{fns[-1].split('/')[-1][:-5]}_{pas}.txt"):
+    if os.path.exists(f"results/mfea/{fns[1].split('/')[-1][:-5]}_{pas}.txt"):
         print(f"existed {fns[1]}")
         return
 
