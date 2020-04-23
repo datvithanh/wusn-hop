@@ -101,7 +101,7 @@ def run_ga(fns, flog, logger=None):
             idx1, idx2 = np.random.randint(0, POP_SIZE - 1), np.random.randint(0, POP_SIZE - 1)
             p1, p2 = copy.deepcopy(pop[idx1]), copy.deepcopy(pop[idx2])
 
-            if pop_skill_factor[idx1] == pop_skill_factor[idx2] and np.random.random() < CXPB:
+            if pop_skill_factor[idx1] == pop_skill_factor[idx2] or np.random.random() < CXPB:
                 offs1, offs2 = crossover(p1, p2)
                 offsprings.extend([offs1, offs2])
             else:
@@ -169,11 +169,11 @@ def solve(fns, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer
     # logger.info("crossover probability: %s" % CXPB)
     # logger.info("mutation probability: %s" % MUTPB)
     # logger.info("run GA....")
-    if os.path.exists(f"results/mfea/{fns[-1].split('/')[-1][:-5]}_{pas}.txt"):
+    if os.path.exists(f"results/mfea{len(fns)}/{fns[-1].split('/')[-1][:-5]}_{pas}.txt"):
         print(f"existed {fns[1]}")
         return
 
-    flog = open(f"results/mfea/{fns[-1].split('/')[-1][:-5]}_{pas}.txt", 'w+')
+    flog = open(f"results/mfea{len(fns)}/{fns[-1].split('/')[-1][:-5]}_{pas}.txt", 'w+')
 
     flog.write(f'{fns}\n')
 
@@ -186,12 +186,24 @@ def instances(single, multi):
     hop_dir='./data/hop'
     layer_dir='./data/layer'
 
+    if single == 1 and multi == 1:
+        rerun = set([tmp.replace('\n', '') for tmp in open('run_hop.txt', 'r').readlines()])
+        
+        for i in range(10):
+            rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
+            for j in rerun_hop:
+                single = '_'.join(j.split('_')[:-1]) + '.json'
+                single = os.path.join(layer_dir, single)
+                multi1 = os.path.join(hop_dir, j)
+                tests.append([single, multi1])
+
+            pases = pases + [i] * len(rerun_hop)
+
     if single == 1 and multi == 3:
         rerun = set([tmp.replace('\n', '') for tmp in open('run_hop.txt', 'r').readlines()])
         
         for i in range(10):
             rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
-            sets = []
             for j in rerun_hop:
                 single = '_'.join(j.split('_')[:-1]) + '.json'
 
@@ -219,7 +231,6 @@ def instances(single, multi):
 
         for i in range(10):
             rerun_hop = [tmp for tmp in os.listdir(layer_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
-            sets = []
             for j in rerun_hop:
                 splt = j.split('_')
 
@@ -258,7 +269,6 @@ def instances(single, multi):
 
         for i in range(10):
             rerun_hop = [tmp for tmp in os.listdir(layer_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
-            sets = []
             for j in rerun_hop:
                 splt = j.split('_')
 
@@ -292,10 +302,12 @@ def instances(single, multi):
 
 if __name__ == '__main__':
     logger = init_log()
-    os.makedirs('results/mfea', exist_ok=True)
+    os.makedirs('results/mfea2', exist_ok=True)
+    os.makedirs('results/mfea4', exist_ok=True)
+    os.makedirs('results/mfea6', exist_ok=True)
 
-    tests, pases = instances(3,1)
-    
+    tests, pases = instances(1,1)
+
     joblib.Parallel(n_jobs=8)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
     )
