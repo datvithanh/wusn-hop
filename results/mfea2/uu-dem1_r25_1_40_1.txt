@@ -1,0 +1,301 @@
+['./data/layer/uu-dem1_r25_1.json', './data/hop/uu-dem1_r25_1_40.json']
+GEN 0 time 1587660394
+inf
+inf
+GEN 1 time 1587660396
+inf
+inf
+GEN 2 time 1587660399
+inf
+inf
+GEN 3 time 1587660401
+inf
+inf
+GEN 4 time 1587660403
+inf
+inf
+GEN 5 time 1587660406
+inf
+inf
+GEN 6 time 1587660408
+inf
+inf
+GEN 7 time 1587660410
+inf
+inf
+GEN 8 time 1587660413
+inf
+inf
+GEN 9 time 1587660415
+inf
+inf
+GEN 10 time 1587660418
+inf
+inf
+GEN 11 time 1587660420
+inf
+inf
+GEN 12 time 1587660422
+inf
+inf
+GEN 13 time 1587660425
+inf
+inf
+GEN 14 time 1587660427
+inf
+inf
+GEN 15 time 1587660429
+inf
+inf
+GEN 16 time 1587660432
+inf
+inf
+GEN 17 time 1587660434
+inf
+inf
+GEN 18 time 1587660436
+inf
+inf
+GEN 19 time 1587660439
+inf
+inf
+GEN 20 time 1587660441
+inf
+inf
+GEN 21 time 1587660443
+inf
+inf
+GEN 22 time 1587660446
+inf
+inf
+GEN 23 time 1587660448
+inf
+inf
+GEN 24 time 1587660450
+inf
+inf
+GEN 25 time 1587660453
+inf
+inf
+GEN 26 time 1587660455
+inf
+inf
+GEN 27 time 1587660458
+inf
+inf
+GEN 28 time 1587660460
+inf
+inf
+GEN 29 time 1587660462
+inf
+inf
+GEN 30 time 1587660465
+inf
+inf
+GEN 31 time 1587660467
+inf
+inf
+GEN 32 time 1587660469
+inf
+inf
+GEN 33 time 1587660472
+inf
+inf
+GEN 34 time 1587660474
+inf
+inf
+GEN 35 time 1587660477
+inf
+inf
+GEN 36 time 1587660479
+inf
+inf
+GEN 37 time 1587660481
+inf
+inf
+GEN 38 time 1587660484
+inf
+inf
+GEN 39 time 1587660486
+inf
+inf
+GEN 40 time 1587660488
+inf
+inf
+GEN 41 time 1587660491
+inf
+inf
+GEN 42 time 1587660493
+inf
+inf
+GEN 43 time 1587660496
+inf
+inf
+GEN 44 time 1587660498
+inf
+inf
+GEN 45 time 1587660500
+inf
+inf
+GEN 46 time 1587660503
+inf
+inf
+GEN 47 time 1587660505
+inf
+inf
+GEN 48 time 1587660508
+inf
+inf
+GEN 49 time 1587660510
+inf
+inf
+GEN 50 time 1587660512
+inf
+inf
+GEN 51 time 1587660515
+inf
+inf
+GEN 52 time 1587660517
+inf
+inf
+GEN 53 time 1587660519
+inf
+inf
+GEN 54 time 1587660522
+inf
+inf
+GEN 55 time 1587660524
+inf
+inf
+GEN 56 time 1587660527
+inf
+inf
+GEN 57 time 1587660529
+inf
+inf
+GEN 58 time 1587660531
+inf
+inf
+GEN 59 time 1587660534
+inf
+inf
+GEN 60 time 1587660536
+inf
+inf
+GEN 61 time 1587660539
+inf
+inf
+GEN 62 time 1587660541
+inf
+inf
+GEN 63 time 1587660543
+inf
+inf
+GEN 64 time 1587660546
+inf
+inf
+GEN 65 time 1587660548
+inf
+inf
+GEN 66 time 1587660551
+inf
+inf
+GEN 67 time 1587660553
+inf
+inf
+GEN 68 time 1587660555
+inf
+inf
+GEN 69 time 1587660558
+inf
+inf
+GEN 70 time 1587660560
+inf
+inf
+GEN 71 time 1587660562
+inf
+inf
+GEN 72 time 1587660565
+inf
+inf
+GEN 73 time 1587660567
+inf
+inf
+GEN 74 time 1587660570
+inf
+inf
+GEN 75 time 1587660572
+inf
+inf
+GEN 76 time 1587660574
+inf
+inf
+GEN 77 time 1587660577
+inf
+inf
+GEN 78 time 1587660579
+inf
+inf
+GEN 79 time 1587660581
+inf
+inf
+GEN 80 time 1587660584
+inf
+inf
+GEN 81 time 1587660586
+inf
+inf
+GEN 82 time 1587660589
+inf
+inf
+GEN 83 time 1587660591
+inf
+inf
+GEN 84 time 1587660593
+inf
+inf
+GEN 85 time 1587660596
+inf
+inf
+GEN 86 time 1587660598
+inf
+inf
+GEN 87 time 1587660601
+inf
+inf
+GEN 88 time 1587660603
+inf
+inf
+GEN 89 time 1587660605
+inf
+inf
+GEN 90 time 1587660608
+inf
+inf
+GEN 91 time 1587660610
+inf
+inf
+GEN 92 time 1587660613
+inf
+inf
+GEN 93 time 1587660615
+inf
+inf
+GEN 94 time 1587660617
+inf
+inf
+GEN 95 time 1587660620
+inf
+inf
+GEN 96 time 1587660622
+inf
+inf
+GEN 97 time 1587660625
+inf
+inf
+GEN 98 time 1587660627
+inf
+inf
+GEN 99 time 1587660629
+inf
+inf
