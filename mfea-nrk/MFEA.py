@@ -227,41 +227,38 @@ def instances(single, multi):
             pases = pases + [i] * len(rerun_hop)
 
     if single == 3 and multi == 1:
-        rerun = set([tmp.replace('\n', '') for tmp in open('run_layer.txt', 'r').readlines()])
+        rerun = set([tmp.replace('\n', '') for tmp in open('run_hop.txt', 'r').readlines()])
 
         for i in range(10):
-            rerun_hop = [tmp for tmp in os.listdir(layer_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
+            rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
             for j in rerun_hop:
                 splt = j.split('_')
-
-                r = int(splt[-2][1:])
+                print(splt)
+                r = int(splt[-3][1:])
                 dem = int(splt[0][6:])
 
-                splt[-2] = 'r' + str(75-r)
-                single1 = '_'.join(splt)
-                splt[-2] = 'r' + str(r)
+                single1 = '_'.join(j.split('_')[:-1]) + '.json'
 
                 splt[0] = splt[0][:6] + str(11-dem)
-                single3 = '_'.join(splt)
+                single2 = '_'.join(splt[:-1]) + '.json'
                 splt[0] = splt[0][:6] + str(dem)
-                
-                multi = j[:-5] + '_0.json'
+
+                splt[0] = splt[0][:6] + str(11-dem)
+                single2 = '_'.join(splt[:-1]) + '.json'
+                splt[0] = splt[0][:6] + str(dem)
+
+                splt[-3] = f'r{75-r}'
+                single3 = '_'.join(splt[:-1]) + '.json'
+
                 single1 = os.path.join(layer_dir, single1)
-                single2 = os.path.join(layer_dir, j)
+                single2 = os.path.join(layer_dir, single2)
                 single3 = os.path.join(layer_dir, single3)
-                multi = os.path.join(hop_dir, multi)
-                # outlier
-                if 'uu' not in j:
-                    continue
-                single1, single2, single3 = './data/layer/uu-dem6_r25_1.json', './data/layer/uu-dem6_r50_1.json', './data/layer/uu-dem5_r50_1.json'
-                multi = j[:-5] + '_40.json'
-                multi = os.path.join(hop_dir, multi)
+                multi = os.path.join(hop_dir, j)
+                print(multi, single1, single2, single3)
 
-                pases.append(i+5)
-                # outlier
-                tests.append([single1, single2, single3, multi])
+                tests.append([single1, multi, single2, single3])
 
-            # pases = pases + [i+5] * len(rerun_hop)
+            pases = pases + [i] * len(rerun_hop)
 
 
     if single == 3 and multi == 3:
@@ -306,7 +303,7 @@ if __name__ == '__main__':
     os.makedirs('results/mfea4', exist_ok=True)
     os.makedirs('results/mfea6', exist_ok=True)
 
-    tests, pases = instances(1,3)
+    tests, pases = instances(3,1)
 
     joblib.Parallel(n_jobs=8)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
