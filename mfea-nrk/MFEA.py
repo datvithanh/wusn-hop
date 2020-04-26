@@ -306,7 +306,7 @@ if __name__ == '__main__':
     os.makedirs('results/mfea4', exist_ok=True)
     os.makedirs('results/mfea6', exist_ok=True)
 
-    tests, pases = instances(1,1)
+    tests, pases = instances(1,3)
 
     joblib.Parallel(n_jobs=8)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)

@@ -165,7 +165,9 @@ if __name__ == "__main__":
     #         joblib.delayed(solve)(fn, pas=i, logger=logger, is_hop=False, datadir='data/layer', logdir='results/layer') for fn in os.listdir('data/layer')
     #     )
 
-    rerun = set([tmp.replace('\n', '') for tmp in open('rerun.txt', 'r').readlines()])
+    rerun = list(set([tmp.replace('\n', '') for tmp in open('run_hop.txt', 'r').readlines()])) + \
+            list(set([tmp.replace('\n', '') for tmp in open('run_layer.txt', 'r').readlines()]))
+
     pases = []
     tests = []
     is_hops = []
