@@ -233,7 +233,6 @@ def instances(single, multi):
             rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
             for j in rerun_hop:
                 splt = j.split('_')
-                print(splt)
                 r = int(splt[-3][1:])
                 dem = int(splt[0][6:])
 
@@ -254,7 +253,6 @@ def instances(single, multi):
                 single2 = os.path.join(layer_dir, single2)
                 single3 = os.path.join(layer_dir, single3)
                 multi = os.path.join(hop_dir, j)
-                print(multi, single1, single2, single3)
 
                 tests.append([single1, multi, single2, single3])
 
