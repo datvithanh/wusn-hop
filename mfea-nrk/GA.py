@@ -128,7 +128,9 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
         flog.write(f'{best_individual}\t{father}\t{num_child}\t{obj}\n')
 
         # logger.info("Min value this pop %d : %f " % (g, min_value))
-
+    obj = constructor.get_loss(best_individual)
+    if obj > 10:
+        return False
     # logger.info("Finished! Best individual: %s, fitness: %s" % (best_individual, toolbox.evaluate(best_individual)))
     # return best_individual
 
@@ -146,8 +148,9 @@ def solve(fn, pas=1, logger=None, is_hop=True, datadir='data/hop', logdir='resul
     # logger.info("mutation probability: %s" % MUTPB)
 
     flog.write(f'{fn}\n')
-
-    run(inp, flog, logger=logger, is_hop=is_hop)
+    while not run(inp, flog, logger=logger, is_hop=is_hop):
+        flog = open(f'{logdir}/{fn[:-5]}_{pas}.txt', 'w+')
+        flog.write(f'{fn}\n')
     print(f'done solved {fn}')
     
 
