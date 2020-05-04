@@ -227,7 +227,7 @@ def instances(single, multi):
             pases = pases + [i] * len(rerun_hop)
 
     if single == 3 and multi == 1:
-        rerun = set([tmp.replace('\n', '') for tmp in open('run_hop.txt', 'r').readlines()])
+        rerun = set([tmp.replace('\n', '') for tmp in open('run_hop_total.txt', 'r').readlines()])
 
         for i in range(10):
             rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
@@ -254,7 +254,7 @@ def instances(single, multi):
                 single3 = os.path.join(layer_dir, single3)
                 multi = os.path.join(hop_dir, j)
 
-                tests.append([single1, multi, single2, single3])
+                tests.append([single1, single2, single3, multi])
 
             pases = pases + [i] * len(rerun_hop)
 
@@ -302,6 +302,8 @@ if __name__ == '__main__':
     os.makedirs('results/mfea6', exist_ok=True)
 
     tests, pases = instances(3,1)
+    print(len(tests))
+    print(len(pases))
 
     joblib.Parallel(n_jobs=8)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
