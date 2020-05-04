@@ -131,6 +131,7 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
     obj = constructor.get_loss(best_individual)
     if obj > 10:
         return False
+    return True
     # logger.info("Finished! Best individual: %s, fitness: %s" % (best_individual, toolbox.evaluate(best_individual)))
     # return best_individual
 
