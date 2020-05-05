@@ -296,13 +296,7 @@ def instances(single, multi):
             multi1 = j[:-5] + '_0.json'
             multi2 = j[:-5] + '_40.json'
             multi3 = single3[:-5] + '_0.json'
-
-            single1 = os.path.join(layer_dir, single1)
-            single2 = os.path.join(layer_dir, j)
-            single3 = os.path.join(layer_dir, single3)
-            multi1 = os.path.join(hop_dir, multi1)
-            multi2 = os.path.join(hop_dir, multi2)
-            multi3 = os.path.join(hop_dir, multi3)
+            
             return multi3
 
         for i in range(10):
@@ -346,10 +340,10 @@ if __name__ == '__main__':
     os.makedirs('results/mfea4', exist_ok=True)
     os.makedirs('results/mfea6', exist_ok=True)
 
-    tests, pases = instances(1,3)
+    tests, pases = instances(3,3)
     print(len(tests))
     print(len(pases))
 
-    # joblib.Parallel(n_jobs=8)(
-    #     joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
-    # )
+    joblib.Parallel(n_jobs=8)(
+        joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
+    )
