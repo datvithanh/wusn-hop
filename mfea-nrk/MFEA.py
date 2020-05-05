@@ -210,22 +210,17 @@ def instances(single, multi):
     if single == 1 and multi == 3:
         rerun = set([tmp.replace('\n', '') for tmp in open('run_hop.txt', 'r').readlines()])
         
-        def transform(j):
+        def transform13(j):
             r = int(j.split('_')[-3][1:])
-            ss = int(j.split('_')[-1][:-5])
-
             splt = j.split('_')
-            splt[-1] = str(40-ss) + '.json'
-            multi2 = '_'.join(splt)
-            
-            splt[-1] = str(ss) + '.json'
             splt[-3] = 'r' + str(75-r)
             multi3 = '_'.join(splt)
 
             return multi3
 
         for i in range(10):
-            rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{transform(tmp)[:-5]}_{i}.txt' in rerun]
+            rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
+            # rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{transform13(tmp)[:-5]}_{i}.txt' in rerun]
             for j in rerun_hop:
                 single = '_'.join(j.split('_')[:-1]) + '.json'
 
@@ -284,8 +279,36 @@ def instances(single, multi):
     if single == 3 and multi == 3:
         rerun = set([tmp.replace('\n', '') for tmp in open('run_layer.txt', 'r').readlines()])
 
+        def transform33(j):
+            splt = j.split('_')
+
+            r = int(splt[-2][1:])
+            dem = int(splt[0][6:])
+
+            splt[-2] = 'r' + str(75-r)
+            single1 = '_'.join(splt)
+            splt[-2] = 'r' + str(r)
+
+            splt[0] = splt[0][:6] + str(11-dem)
+            single3 = '_'.join(splt)
+            splt[0] = splt[0][:6] + str(dem)
+            
+            multi1 = j[:-5] + '_0.json'
+            multi2 = j[:-5] + '_40.json'
+            multi3 = single3[:-5] + '_0.json'
+
+            single1 = os.path.join(layer_dir, single1)
+            single2 = os.path.join(layer_dir, j)
+            single3 = os.path.join(layer_dir, single3)
+            multi1 = os.path.join(hop_dir, multi1)
+            multi2 = os.path.join(hop_dir, multi2)
+            multi3 = os.path.join(hop_dir, multi3)
+            return multi3
+
         for i in range(10):
-            rerun_hop = [tmp for tmp in os.listdir(layer_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
+            # rerun_hop = [tmp for tmp in os.listdir(layer_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
+            rerun_hop = [tmp for tmp in os.listdir(layer_dir) if f'{transform33(tmp)[:-5]}_{i}.txt' in rerun]
+
             for j in rerun_hop:
                 splt = j.split('_')
 
