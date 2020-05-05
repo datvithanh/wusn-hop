@@ -176,7 +176,7 @@ def solve(fns, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer
     # logger.info("run GA....")
     if os.path.exists(f"results/mfea{len(fns)}/{fns[-1].split('/')[-1][:-5]}_{pas}.txt"):
         print(f"existed {fns[1]}")
-        return
+        #return
 
     flog = open(f"results/mfea{len(fns)}/{fns[-1].split('/')[-1][:-5]}_{pas}.txt", 'w+')
 
