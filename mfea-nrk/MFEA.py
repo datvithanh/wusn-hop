@@ -160,7 +160,7 @@ def run_ga(fns, flog, logger=None):
     
     if max(best_objs) > 10:
         return False
-        
+
     return True
 
 def solve(fns, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
@@ -235,7 +235,7 @@ def instances(single, multi):
             pases = pases + [i] * len(rerun_hop)
 
     if single == 3 and multi == 1:
-        rerun = set([tmp.replace('\n', '') for tmp in open('run_hop_total.txt', 'r').readlines()])
+        rerun = set([tmp.replace('\n', '') for tmp in open('run_hop.txt', 'r').readlines()])
 
         for i in range(10):
             rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
