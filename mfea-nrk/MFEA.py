@@ -309,7 +309,7 @@ if __name__ == '__main__':
     os.makedirs('results/mfea4', exist_ok=True)
     os.makedirs('results/mfea6', exist_ok=True)
 
-    tests, pases = instances(3,1)
+    tests, pases = instances(1,3)
     print(len(tests))
     print(len(pases))
 
