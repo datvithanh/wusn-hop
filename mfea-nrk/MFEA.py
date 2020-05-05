@@ -210,8 +210,22 @@ def instances(single, multi):
     if single == 1 and multi == 3:
         rerun = set([tmp.replace('\n', '') for tmp in open('run_hop.txt', 'r').readlines()])
         
+        def transform(j):
+            r = int(j.split('_')[-3][1:])
+            ss = int(j.split('_')[-1][:-5])
+
+            splt = j.split('_')
+            splt[-1] = str(40-ss) + '.json'
+            multi2 = '_'.join(splt)
+            
+            splt[-1] = str(ss) + '.json'
+            splt[-3] = 'r' + str(75-r)
+            multi3 = '_'.join(splt)
+
+            return multi3
+
         for i in range(10):
-            rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
+            rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{transform(tmp)[:-5]}_{i}.txt' in rerun]
             for j in rerun_hop:
                 single = '_'.join(j.split('_')[:-1]) + '.json'
 
