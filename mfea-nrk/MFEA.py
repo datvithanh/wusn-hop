@@ -157,6 +157,11 @@ def run_ga(fns, flog, logger=None):
 
         for task in range(num_tasks):
             flog.write(f'{best_objs[task]}\n')
+    
+    if max(best_objs) > 10:
+        return False
+        
+    return True
 
 def solve(fns, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
     print(f'solving {fns} pas {pas}')
@@ -177,7 +182,10 @@ def solve(fns, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer
 
     flog.write(f'{fns}\n')
 
-    run_ga(fns, flog, logger)
+    while not run_ga(fns, flog, logger):
+        flog = open(f"results/mfea{len(fns)}/{fns[-1].split('/')[-1][:-5]}_{pas}.txt", 'w+')
+        flog.write(f'{fns}\n')
+
     print(f'done solved {fns[1]}')
 
 def instances(single, multi):
