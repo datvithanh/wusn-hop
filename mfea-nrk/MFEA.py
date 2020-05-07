@@ -15,7 +15,7 @@ from utils.logger import init_log
 
 N_GENS = 100
 POP_SIZE = 300
-CXPB = 0.8
+CXPB = 0.6
 MUTPB = 0.2
 TERMINATE = 30
 
@@ -195,7 +195,7 @@ def instances(single, multi):
     layer_dir='./data/layer'
 
     if single == 1 and multi == 1:
-        rerun = set([tmp.replace('\n', '') for tmp in open('run_hop.txt', 'r').readlines()])
+        rerun = set([tmp.replace('\n', '') for tmp in open('run_hop_total.txt', 'r').readlines()])
         
         for i in range(10):
             rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
@@ -340,7 +340,7 @@ if __name__ == '__main__':
     os.makedirs('results/mfea4', exist_ok=True)
     os.makedirs('results/mfea6', exist_ok=True)
 
-    tests, pases = instances(3,3)
+    tests, pases = instances(1, 1)
     print(len(tests))
     print(len(pases))
 
