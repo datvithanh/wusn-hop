@@ -7,6 +7,7 @@ import random
 import numpy as np
 import joblib
 import time
+import argparse
 
 from utils.input import WusnInput
 from constructor.binary import Layer
@@ -178,12 +179,12 @@ def solve(fns, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer
         print(f"existed {fns[1]}")
         #return
 
-    flog = open(f"results/mfea{len(fns)}/{fns[-1].split('/')[-1][:-5]}_{pas}.txt", 'w+')
+    flog = open(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{fns[-1].split('/')[-1][:-5]}_{pas}.txt", 'w+')
 
     flog.write(f'{fns}\n')
 
     while not run_ga(fns, flog, logger):
-        flog = open(f"results/mfea{len(fns)}/{fns[-1].split('/')[-1][:-5]}_{pas}.txt", 'w+')
+        flog = open(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{fns[-1].split('/')[-1][:-5]}_{pas}.txt", 'w+')
         flog.write(f'{fns}\n')
 
     print(f'done solved {fns[1]}')
@@ -195,7 +196,7 @@ def instances(single, multi):
     layer_dir='./data/layer'
 
     if single == 1 and multi == 1:
-        rerun = set([tmp.replace('\n', '') for tmp in open('run_hop_total.txt', 'r').readlines()])
+        rerun = set([tmp.replace('\n', '') for tmp in open('run_hop.txt', 'r').readlines()])
         
         for i in range(10):
             rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
@@ -335,12 +336,18 @@ def instances(single, multi):
     return tests, pases    
 
 if __name__ == '__main__':
-    logger = init_log()
-    os.makedirs('results/mfea2', exist_ok=True)
-    os.makedirs('results/mfea4', exist_ok=True)
-    os.makedirs('results/mfea6', exist_ok=True)
+    parser = argparse.ArgumentParser(description='Parse arguments.')
+    parser.add_argument('--single', default=1, type=int, help='number of single hop tasks')
+    parser.add_argument('--multi', default=1, type=int, help='number of multi hop tasks')
+    args = parser.parse_args()
 
-    tests, pases = instances(1, 1)
+    logger = init_log()
+    os.makedirs('results/mfea11', exist_ok=True)
+    os.makedirs('results/mfea31', exist_ok=True)
+    os.makedirs('results/mfea13', exist_ok=True)
+    os.makedirs('results/mfea33', exist_ok=True)
+    tests, pases = instances(args.single, args.multi)
+
     print(len(tests))
     print(len(pases))
 

@@ -163,7 +163,13 @@ class Nrk:
                 e_t = WusnConstants.k_bit * WusnConstants.e_elec + \
                     WusnConstants.k_bit * WusnConstants.e_fs * distance(self._points[index], self._points[father[index]])
                 e_r = WusnConstants.k_bit * WusnConstants.e_elec                
+
+                e = (num_child[index] + (index > self._num_of_relays))*e_t + num_child[index] * e_r + e_t
                 
-                max_energy_consumption = max(max_energy_consumption, (num_child[index] + (index > self._num_of_relays))*e_t + num_child[index] * e_r)
+                e = num_child[index] * e_r + \
+                    (num_child[index] + (index > self._num_of_relays)) * WusnConstants.E_da + \
+                    e_t
+
+                max_energy_consumption = max(max_energy_consumption, e)
 
         return max_energy_consumption    
