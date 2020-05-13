@@ -208,7 +208,7 @@ def instances():
                 type3.append(os.path.join(layer_dir, test))
             if 'uu' in test and 'r50' in test:
                 type4.append(os.path.join(layer_dir, test))
-            if 'uu' in test and 'r25':
+            if 'uu' in test and 'r25' in test:
                 type5.append(os.path.join(layer_dir, test))
         else:
             if 'ga' in test and 'r25' in test and '_0' in test:
@@ -217,14 +217,14 @@ def instances():
                 type2.append(os.path.join(hop_dir, test))
             if 'uu' in test and 'r25' in test and '_0' in test:
                 type3.append(os.path.join(hop_dir, test))
-            if 'uu' in test and 'r25' in test and '_0' in test:
+            if 'uu' in test and 'r50' in test and '_0' in test:
                 type4.append(os.path.join(hop_dir, test))
             if 'uu' in test and 'r25' in test and '_40' in test:
                 type5.append(os.path.join(hop_dir, test))
 
     tests = [type1, type2, type3, type4, type5]
     # tests = [type1[:4]]
-    pases = [0] * len(tests)
+    pases = [1, 2, 3, 4, 5]
     print(type5)
     return tests, pases    
 
@@ -233,12 +233,13 @@ if __name__ == '__main__':
     # os.makedirs('results/mfea2', exist_ok=True)
     # os.makedirs('results/mfea4', exist_ok=True)
     # os.makedirs('results/mfea6', exist_ok=True)
-    # os.makedirs('results/mfea10', exist_ok=True)
+    os.makedirs('results/mfea20', exist_ok=True)
 
     tests, pases = instances()
     print(len(tests))
     print(len(pases))
     print(tests)
+    print([len(tmp) for tmp in tests])
     joblib.Parallel(n_jobs=8)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
     )
