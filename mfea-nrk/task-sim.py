@@ -222,9 +222,9 @@ def instances():
             if 'uu' in test and 'r25' in test and '_40' in test:
                 type5.append(os.path.join(hop_dir, test))
 
-    tests = [type1, type2, type3, type4, type5]
+    tests = [sorted(type1), sorted(type2), sorted(type3), sorted(type4), sorted(type5)]
     # tests = [type1[:4]]
-    pases = [1, 2, 3, 4, 5]
+    pases = [0, 1, 2, 3, 4]
     print(type5)
     return tests, pases    
 
@@ -239,7 +239,6 @@ if __name__ == '__main__':
     print(len(tests))
     print(len(pases))
     print(tests)
-    print([len(tmp) for tmp in tests])
     joblib.Parallel(n_jobs=8)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
     )
