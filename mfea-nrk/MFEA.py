@@ -221,7 +221,11 @@ def instances(single, multi):
 
         for i in range(10):
             rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
+<<<<<<< HEAD
             #rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{transform13(tmp)[:-5]}_{i}.txt' in rerun]
+=======
+            # rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{transform13(tmp)[:-5]}_{i}.txt' in rerun]
+>>>>>>> 0bed6807c14b2adc12413393243350f7116cac94
             for j in rerun_hop:
                 single = '_'.join(j.split('_')[:-1]) + '.json'
 
@@ -302,7 +306,11 @@ def instances(single, multi):
 
         for i in range(10):
             rerun_hop = [tmp for tmp in os.listdir(layer_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
+<<<<<<< HEAD
             #rerun_hop = [tmp for tmp in os.listdir(layer_dir) if f'{transform33(tmp)[:-5]}_{i}.txt' in rerun]
+=======
+            # rerun_hop = [tmp for tmp in os.listdir(layer_dir) if f'{transform33(tmp)[:-5]}_{i}.txt' in rerun]
+>>>>>>> 0bed6807c14b2adc12413393243350f7116cac94
 
             for j in rerun_hop:
                 splt = j.split('_')
