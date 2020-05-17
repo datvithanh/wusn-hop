@@ -164,7 +164,7 @@ def run_ga(fns, flog, logger=None):
 
     return True
 
-def solve(fns, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
+def solve(fns, pas, logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
     print(f'solving {fns} pas {pas}')
 
     # inps = [WusnInput.from_file(tmp) for tmp in fns]
@@ -175,16 +175,13 @@ def solve(fns, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer
     # logger.info("crossover probability: %s" % CXPB)
     # logger.info("mutation probability: %s" % MUTPB)
     # logger.info("run GA....")
-    if os.path.exists(f"results/mfea{len(fns)}/{fns[-1].split('/')[-1][:-5]}_{pas}.txt"):
-        print(f"existed {fns[1]}")
-        #return
 
-    flog = open(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{fns[-1].split('/')[-1][:-5]}_{pas}.txt", 'w+')
+    flog = open(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
 
     flog.write(f'{fns}\n')
 
     while not run_ga(fns, flog, logger):
-        flog = open(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{fns[-1].split('/')[-1][:-5]}_{pas}.txt", 'w+')
+        flog = open(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
         flog.write(f'{fns}\n')
 
     print(f'done solved {fns[1]}')
@@ -336,17 +333,16 @@ def instances(single, multi):
     return tests, pases    
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Parse arguments.')
-    parser.add_argument('--single', default=1, type=int, help='number of single hop tasks')
-    parser.add_argument('--multi', default=1, type=int, help='number of multi hop tasks')
-    args = parser.parse_args()
 
     logger = init_log()
     os.makedirs('results/mfea11', exist_ok=True)
     os.makedirs('results/mfea31', exist_ok=True)
     os.makedirs('results/mfea13', exist_ok=True)
     os.makedirs('results/mfea33', exist_ok=True)
-    tests, pases = instances(args.single, args.multi)
+    lines = [tmp.replace('\n', '') for tmp in open('run.txt', 'r').readlines()]
+
+    tests, pases = zip(*[tmp.split('\t') for tmp in lines])
+    tests = [tmp.split(' ') for tmp in tests]
 
     print(len(tests))
     print(len(pases))
