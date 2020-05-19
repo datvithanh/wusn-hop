@@ -233,8 +233,8 @@ def instances():
         else:
             all.append(os.path.join(layer_dir, test))
 
-    tests = sorted(all)
-    passes = [0]
+    tests = [sorted(all)]
+    pases = [0]
     return tests, pases    
 
 if __name__ == '__main__':
@@ -243,12 +243,12 @@ if __name__ == '__main__':
     # os.makedirs('results/mfea4', exist_ok=True)
     # os.makedirs('results/mfea6', exist_ok=True)
     # os.makedirs('results/mfea20', exist_ok=True)
-    os.makedirs('results/mfea180')
+    os.makedirs('results/mfea180', exist_ok=True)
 
     tests, pases = instances()
     print(len(tests))
     print(len(pases))
     print(tests)
-    # joblib.Parallel(n_jobs=8)(
-    #     joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
-    # )
+    joblib.Parallel(n_jobs=8)(
+        joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
+    )
