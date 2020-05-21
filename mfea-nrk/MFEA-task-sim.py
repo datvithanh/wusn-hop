@@ -175,9 +175,9 @@ def solve(fns, pas, logger=None, hop_dir='./data/hop', layer_dir='./data/layer')
     # logger.info("crossover probability: %s" % CXPB)
     # logger.info("mutation probability: %s" % MUTPB)
     # logger.info("run GA....")
-    if os.path.exists(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}"):
-        print("existed", pas)
-        return
+    # if os.path.exists(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}"):
+    #     print("existed", pas)
+    #     return
 
     flog = open(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
 
