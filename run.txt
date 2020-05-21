@@ -5,7 +5,7 @@
 ./data/layer/uu-dem4_r25_1.json ./data/hop/no-dem5_r25_1_40.json ./data/hop/ga-dem10_r50_1_40.json ./data/hop/uu-dem1_r25_1_40.json	uu-dem4_r25_1_4.txt
 ./data/layer/uu-dem1_r25_1.json ./data/hop/no-dem5_r25_1_40.json ./data/hop/ga-dem4_r25_1_40.json ./data/hop/ga-dem10_r50_1_40.json	uu-dem1_r25_1_4.txt
 ./data/layer/uu-dem1_r25_1.json ./data/hop/no-dem5_r25_1_40.json ./data/hop/ga-dem4_r25_1_40.json ./data/hop/ga-dem10_r50_1_40.json	uu-dem1_r25_1_1.txt
-./data/layer/uu-dem8_r25_1json ./data/hop/no-dem5_r25_1_40.json ./data/hop/ga-dem10_r50_1_40.json ./data/hop/ga-dem4_r25_1_40.json	uu-dem8_r25_1_3.txt
+./data/layer/uu-dem8_r25_1.json ./data/hop/no-dem5_r25_1_40.json ./data/hop/ga-dem10_r50_1_40.json ./data/hop/ga-dem4_r25_1_40.json	uu-dem8_r25_1_3.txt
 ./data/layer/uu-dem1_r25_1.json ./data/hop/no-dem5_r25_1_40.json ./data/hop/ga-dem4_r25_1_40.json ./data/hop/ga-dem10_r50_1_40.json	uu-dem1_r25_1_0.txt
 ./data/layer/uu-dem1_r25_1.json ./data/hop/no-dem5_r25_1_40.json ./data/hop/ga-dem4_r25_1_40.json ./data/hop/ga-dem10_r50_1_40.json	uu-dem1_r25_1_2.txt
 ./data/layer/uu-dem1_r25_1.json ./data/hop/no-dem5_r25_1_40.json ./data/hop/ga-dem4_r25_1_40.json ./data/hop/ga-dem10_r50_1_40.json	uu-dem1_r25_1_3.txt
@@ -19,5 +19,3 @@
 ./data/layer/uu-dem4_r25_1.json ./data/layer/ga-dem3_r25_1.json ./data/layer/no-dem4_r25_1.json ./data/hop/no-dem5_r25_1_40.json ./data/hop/ga-dem10_r50_1_40.json ./data/hop/uu-dem1_r25_1_40.json	uu-dem4_r25_1_4.txt
 ./data/layer/uu-dem9_r25_1.json ./data/layer/uu-dem8_r25_1.json ./data/layer/ga-dem3_r25_1.json ./data/hop/no-dem5_r25_1_40.json ./data/hop/uu-dem1_r25_1_40.json ./data/hop/ga-dem10_r50_1_40.json	uu-dem9_r25_1_0.txt
 ./data/layer/uu-dem9_r25_1.json ./data/layer/uu-dem8_r25_1.json ./data/layer/ga-dem3_r25_1.json ./data/hop/no-dem5_r25_1_40.json ./data/hop/uu-dem1_r25_1_40.json ./data/hop/ga-dem10_r50_1_40.json	uu-dem9_r25_1_1.txt
-
-
