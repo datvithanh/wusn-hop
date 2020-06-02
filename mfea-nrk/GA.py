@@ -169,21 +169,21 @@ if __name__ == "__main__":
     #         joblib.delayed(solve)(fn, pas=i, logger=logger, is_hop=False, datadir='data/layer', logdir='results/layer') for fn in os.listdir('data/layer')
     #     )
 
-    rerun = list(set([tmp.replace('\n', '') for tmp in open('run_hop.txt', 'r').readlines()])) + \
-            list(set([tmp.replace('\n', '') for tmp in open('run_layer.txt', 'r').readlines()]))
+    rerun = list(set([tmp.replace('\n', '') for tmp in open('run_hop_total.txt', 'r').readlines()])) + \
+            list(set([tmp.replace('\n', '') for tmp in open('run_layer_total.txt', 'r').readlines()]))
 
     pases = []
     tests = []
     is_hops = []
 
     for i in range(10):
-        rerun_hop = [tmp for tmp in os.listdir('data/hop') if f'{tmp[:-5]}_{i}.txt' in rerun]
+        rerun_hop = [tmp for tmp in os.listdir('data/medum/hop') if f'{tmp[:-5]}_{i}.txt' in rerun]
 
         tests = tests + rerun_hop
         is_hops = is_hops + ['hop'] * len(rerun_hop)
         pases = pases + [i] * len(rerun_hop)
 
-        rerun_layer = [tmp for tmp in os.listdir('data/layer') if f'{tmp[:-5]}_{i}.txt' in rerun]
+        rerun_layer = [tmp for tmp in os.listdir('data/medum/layer') if f'{tmp[:-5]}_{i}.txt' in rerun]
 
         tests = tests + rerun_layer
         is_hops = is_hops + ['layer'] * len(rerun_layer)

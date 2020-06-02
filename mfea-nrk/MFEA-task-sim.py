@@ -130,9 +130,6 @@ def run_ga(fns, flog, logger=None):
 
     offspring_pop = assortive_mating(pop, pop_skill_factor)
 
-    hop_individual, layer_individual = None, None
-
-
     for g in range(N_GENS):
         flog.write(f'GEN {g} time {int(time.time())}\n')
 
@@ -196,7 +193,7 @@ if __name__ == '__main__':
     os.makedirs('results/mfea31', exist_ok=True)
     os.makedirs('results/mfea13', exist_ok=True)
     os.makedirs('results/mfea33', exist_ok=True)
-    lines = [tmp.replace('\n', '') for tmp in open('run_total.txt', 'r').readlines()]
+    lines = [tmp.replace('\n', '') for tmp in open('run_total_medium.txt', 'r').readlines()]
 
     tests, pases = zip(*[tmp.split('\t') for tmp in lines])
     tests = [tmp.split(' ') for tmp in tests]
