@@ -167,7 +167,7 @@ def run_ga(fns, flog, pas, logger=None):
 
     return True
 
-def solve(fns, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
+def solve(fns, pas=1, logger=None, hop_dir='./data/medium/hop', layer_dir='./data/medium/layer'):
     print(f'solving {fns} pas {pas}')
 
     # inps = [WusnInput.from_file(tmp) for tmp in fns]
@@ -225,16 +225,6 @@ def instances():
     tests = [sorted(type1), sorted(type2), sorted(type3), sorted(type4), sorted(type5)]
     pases = [0, 1, 2, 3, 4]
 
-    tests = []
-    all = []
-    for test in os.listdir(layer_dir) + os.listdir(hop_dir):
-        if len(test.split('_')) == 4:
-            all.append(os.path.join(hop_dir, test))
-        else:
-            all.append(os.path.join(layer_dir, test))
-
-    tests = [sorted(all)]
-    pases = [0]
     return tests, pases    
 
 if __name__ == '__main__':
