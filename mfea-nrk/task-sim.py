@@ -242,8 +242,8 @@ if __name__ == '__main__':
     # os.makedirs('results/mfea2', exist_ok=True)
     # os.makedirs('results/mfea4', exist_ok=True)
     # os.makedirs('results/mfea6', exist_ok=True)
-    # os.makedirs('results/mfea20', exist_ok=True)
-    os.makedirs('results/mfea180', exist_ok=True)
+    os.makedirs('results/mfea20', exist_ok=True)
+    # os.makedirs('results/mfea180', exist_ok=True)
 
     tests, pases = instances()
     print(len(tests))

@@ -164,7 +164,7 @@ def run_ga(fns, flog, logger=None):
 
     return True
 
-def solve(fns, pas, logger=None, hop_dir='./data/hop', layer_dir='./data/layer'):
+def solve(fns, pas, logger=None, hop_dir='./data/medium/hop', layer_dir='./data/medium/layer'):
     print(f'solving {fns} pas {pas}')
 
     # inps = [WusnInput.from_file(tmp) for tmp in fns]
