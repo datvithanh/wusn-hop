@@ -64,8 +64,8 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
     FitnessMin = creator.FitnessMin
     creator.create("Individual", list, fitness=FitnessMin)
 
-    max_relays = 14
-    max_hops = 8
+    max_relays = 30
+    max_hops = 12
 
     toolbox = base.Toolbox()
 
@@ -177,13 +177,13 @@ if __name__ == "__main__":
     is_hops = []
 
     for i in range(10):
-        rerun_hop = [tmp for tmp in os.listdir('data/medum/hop') if f'{tmp[:-5]}_{i}.txt' in rerun]
+        rerun_hop = [tmp for tmp in os.listdir('data/medium/hop') if f'{tmp[:-5]}_{i}.txt' in rerun]
 
         tests = tests + rerun_hop
         is_hops = is_hops + ['hop'] * len(rerun_hop)
         pases = pases + [i] * len(rerun_hop)
 
-        rerun_layer = [tmp for tmp in os.listdir('data/medum/layer') if f'{tmp[:-5]}_{i}.txt' in rerun]
+        rerun_layer = [tmp for tmp in os.listdir('data/medium/layer') if f'{tmp[:-5]}_{i}.txt' in rerun]
 
         tests = tests + rerun_layer
         is_hops = is_hops + ['layer'] * len(rerun_layer)

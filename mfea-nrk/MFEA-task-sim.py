@@ -32,8 +32,8 @@ def run_ga(fns, flog, logger=None):
         raise Exception("Error: logger is None!")
 
     # logger.info("Start!")
-    num_of_relays = 14
-    max_hop = 8
+    num_of_relays = 30
+    max_hop = 12
 
     num_tasks = len(fns)
     inputs = []
@@ -201,6 +201,6 @@ if __name__ == '__main__':
     print(len(tests))
     print(len(pases))
 
-    joblib.Parallel(n_jobs=6)(
+    joblib.Parallel(n_jobs=8)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
     )
