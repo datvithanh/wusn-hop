@@ -7,7 +7,6 @@ from collections import defaultdict
 
 from utils.point import SensorNode, RelayNode, Point
 
-
 class WusnConstants:
     # Unit: J
     e_elec = 50 * 1e-9
@@ -91,5 +90,5 @@ class WusnInput:
 
 
 if __name__ == "__main__":
-    inp = WusnInput.from_file('./data/small_data/dem1_0.in')
+    inp = WusnInput.from_file('./data/small/hop/ga-dem1_r25_1_0.json')
     print(inp.relays[0])
