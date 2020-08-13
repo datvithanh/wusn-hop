@@ -16,7 +16,7 @@ def parse_arguments():
     parser = ArgumentParser()
 
     parser.add_argument(dest='dems', nargs='+')
-    parser.add_argument('-o', '--output', default='data/small_data')
+    parser.add_argument('-o', '--output', default='data/small')
     parser.add_argument('-W', type=int, default=200)
     parser.add_argument('-H', type=int, default=200)
     parser.add_argument('--rows', type=int, default=41)
