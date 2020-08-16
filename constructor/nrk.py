@@ -41,14 +41,14 @@ class Nrk:
         
         for rl in inp.relays:
             for sn in inp.sensors:
-                if distance(rl, sn) <= inp.radius:
+                if distance(rl, sn) <= 2 * inp.radius:
                     u, v = point2idx[rl], point2idx[sn]
                     edges[u].append(v)
                     edges[v].append(u)
         if self._is_hop == True:
             for sn1 in inp.sensors:
                 for sn2 in inp.sensors:
-                    if distance(sn1, sn2) <= inp.radius:
+                    if distance(sn1, sn2) <= 2 * inp.radius:
                         u, v = point2idx[sn1], point2idx[sn2]
                         if u == v:
                             continue
@@ -150,9 +150,9 @@ class Nrk:
 
     def get_loss(self, individual):
         father, num_child, hop_count = self.decode_genes(individual)
-     
+
         if None in [father, num_child]:
-            return float('inf')
+            return float('inf'), father, num_child
 
         max_energy_consumption = 0
         
@@ -161,7 +161,7 @@ class Nrk:
                 if index == 0:
                     continue
                 e_t = WusnConstants.k_bit * WusnConstants.e_elec + \
-                    WusnConstants.k_bit * WusnConstants.e_fs * distance(self._points[index], self._points[father[index]])
+                    WusnConstants.k_bit * WusnConstants.e_fs * distance(self._points[index], self._points[father[index]]) ** 2
                 e_r = WusnConstants.k_bit * WusnConstants.e_elec                
 
                 e = (num_child[index] + (index > self._num_of_relays))*e_t + num_child[index] * e_r + e_t
@@ -172,4 +172,4 @@ class Nrk:
 
                 max_energy_consumption = max(max_energy_consumption, e)
 
-        return max_energy_consumption    
+        return max_energy_consumption, father, num_child

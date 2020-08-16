@@ -59,7 +59,7 @@ def run_ga(fns, flog, logger=None):
 
         ranks = []
         for task in range(num_tasks):
-            rank = zip(np.argsort([tmp[task] for tmp in factorial_cost]), range(len(pop)))
+            rank = zip(np.argsort([tmp[task][0] for tmp in factorial_cost]), range(len(pop)))
             rank = [tmp[-1] for tmp in sorted(rank, key=lambda x: x[0])]
             ranks.append(rank)
 
@@ -154,10 +154,11 @@ def run_ga(fns, flog, logger=None):
             for indi, constructor, inp in zip(best_indis, constructors, inputs)]
 
         for task in range(num_tasks):
-            flog.write(f'{best_objs[task]}\n')
+            flog.write(f'{best_objs[task][0]}\n{best_objs[task][1]}\n{best_objs[task][2]}\n')
     
-    if max(best_objs) > 10:
-        return False
+    #TODO: remove comments below
+    # if max([tmp[0] for tmp in best_objs]) > 10:
+    #     return False
 
     return True
 
@@ -193,14 +194,20 @@ if __name__ == '__main__':
     os.makedirs('results/mfea31', exist_ok=True)
     os.makedirs('results/mfea13', exist_ok=True)
     os.makedirs('results/mfea33', exist_ok=True)
-    lines = [tmp.replace('\n', '') for tmp in open('run_total_medium.txt', 'r').readlines()]
+    # lines = [tmp.replace('\n', '') for tmp in open('run_total_medium.txt', 'r').readlines()]
+
+    lines = [tmp.replace('\n', '') for tmp in open('run_total.txt', 'r').readlines()]
 
     tests, pases = zip(*[tmp.split('\t') for tmp in lines])
     tests = [tmp.split(' ') for tmp in tests]
 
+    tests = tests[:100:20]
+    pases = pases[:100:20]
     print(len(tests))
     print(len(pases))
-
-    joblib.Parallel(n_jobs=8)(
-        joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
-    )
+    print(tests, pases)
+    # joblib.Parallel(n_jobs=1)(
+    #     joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
+    # )
+    for fn, pas in zip(tests, pases):
+        solve(fn, pas=pas, logger=logger)
