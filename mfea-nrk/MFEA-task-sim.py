@@ -132,9 +132,9 @@ def run_ga(fns, flog, logger=None):
 
     for g in range(N_GENS):
         flog.write(f'GEN {g} time {int(time.time())}\n')
-        print(g)
+
         offspring_pop = assortive_mating(pop, pop_skill_factor)
-        
+
         immediate_pop = pop + offspring_pop
         
         pop_skill_factor, pop_scalar_fitness = skill_factor(immediate_pop)
