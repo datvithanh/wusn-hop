@@ -177,19 +177,19 @@ if __name__ == "__main__":
     is_hops = []
 
     for i in range(10):
-        rerun_hop = [tmp for tmp in os.listdir('data/medium/hop') if f'{tmp[:-5]}_{i}.txt' in rerun]
+        rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if f'{tmp[:-5]}_{i}.txt' in rerun]
 
         tests = tests + rerun_hop
-        is_hops = is_hops + ['hop'] * len(rerun_hop)
+        is_hops = is_hops + ['small/hop'] * len(rerun_hop)
         pases = pases + [i] * len(rerun_hop)
 
-        rerun_layer = [tmp for tmp in os.listdir('data/medium/layer') if f'{tmp[:-5]}_{i}.txt' in rerun]
+        rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if f'{tmp[:-5]}_{i}.txt' in rerun]
 
         tests = tests + rerun_layer
-        is_hops = is_hops + ['layer'] * len(rerun_layer)
+        is_hops = is_hops + ['small/layer'] * len(rerun_layer)
         pases = pases + [i] * len(rerun_layer)
 
-    joblib.Parallel(n_jobs=8)(
+    joblib.Parallel(n_jobs=16)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger, is_hop=True if is_hop == 'hop' else False, datadir=f'data/{is_hop}', logdir=f'results/{is_hop}') for \
             (pas, is_hop, fn) in zip(pases, is_hops, tests)
     )
