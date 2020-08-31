@@ -205,7 +205,7 @@ if __name__ == '__main__':
     print(len(tests))
     print(len(pases))
     
-    joblib.Parallel(n_jobs=16)(
+    joblib.Parallel(n_jobs=32)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
     )
     # for fn, pas in zip(tests, pases):
