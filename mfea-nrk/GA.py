@@ -185,7 +185,7 @@ if __name__ == "__main__":
         is_hops = is_hops + ['small/layer'] * len(rerun_layer)
         pases = pases + [i] * len(rerun_layer)
 
-    joblib.Parallel(n_jobs=16)(
+    joblib.Parallel(n_jobs=32)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger, is_hop=True if 'hop' in is_hop else False, datadir=f'data/{is_hop}', logdir=f'results/{is_hop}') for \
             (pas, is_hop, fn) in zip(pases, is_hops, tests)
     )
