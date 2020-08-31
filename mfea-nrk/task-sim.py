@@ -222,27 +222,18 @@ def instances():
             if 'uu' in test and 'r25' in test and '_40' in test:
                 type5.append(os.path.join(hop_dir, test))
 
-    # tests = [sorted(type1), sorted(type2), sorted(type3), sorted(type4), sorted(type5)]
-    tests = [sorted(type5)]
-    print(len(type5))
+    tests = [sorted(type1), sorted(type2), sorted(type3), sorted(type4), sorted(type5)]
+    pases = [0, 1, 2, 3, 4]
     print(tests)
-    # pases = [0, 1, 2, 3, 4]
-    pases = [4]
+    print([len(tmp) for tmp in tests])
 
     return tests, pases    
 
 if __name__ == '__main__':
     logger = init_log()
-    # os.makedirs('results/mfea2', exist_ok=True)
-    # os.makedirs('results/mfea4', exist_ok=True)
-    # os.makedirs('results/mfea6', exist_ok=True)
     os.makedirs('results/mfea20', exist_ok=True)
-    # os.makedirs('results/mfea180', exist_ok=True)
 
     tests, pases = instances()
-    # print(len(tests))
-    # print(len(pases))
-    # print(tests)
-    joblib.Parallel(n_jobs=1)(
+    joblib.Parallel(n_jobs=2)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
     )
