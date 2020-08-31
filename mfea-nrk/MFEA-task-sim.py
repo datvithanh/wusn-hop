@@ -31,9 +31,11 @@ def run_ga(fns, flog, logger=None):
     if logger is None:
         raise Exception("Error: logger is None!")
 
-    # logger.info("Start!")
-    num_of_relays = 30
-    max_hop = 12
+    # max_relays = 30
+    # max_hops = 12
+
+    max_relays = 14
+    max_hops = 8
 
     num_tasks = len(fns)
     inputs = []
@@ -41,9 +43,9 @@ def run_ga(fns, flog, logger=None):
     for fn in fns:
         inputs.append(WusnInput.from_file(fn))
         if 'layer' in fn:
-            constructors.append(Nrk(inputs[-1], max_relay=num_of_relays, is_hop=False, hop=1000))
+            constructors.append(Nrk(inputs[-1], max_relay=max_relays, is_hop=False, hop=1000))
         else:
-            constructors.append(Nrk(inputs[-1], max_relay=num_of_relays, is_hop=True, hop=max_hop))
+            constructors.append(Nrk(inputs[-1], max_relay=max_relays, is_hop=True, hop=max_hops))
 
     num_of_relays = max([inp.num_of_relays for inp in inputs])
     num_of_sensors = max([inp.num_of_sensors for inp in inputs])

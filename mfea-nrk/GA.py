@@ -8,6 +8,7 @@ from itertools import combinations
 import random
 import joblib
 import time
+from datetime import datetime
 
 from utils.input import WusnInput
 from constructor.nrk import Nrk
@@ -64,8 +65,11 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
     FitnessMin = creator.FitnessMin
     creator.create("Individual", list, fitness=FitnessMin)
 
-    max_relays = 30
-    max_hops = 12
+    # max_relays = 30
+    # max_hops = 12
+
+    max_relays = 14
+    max_hops = 8
 
     toolbox = base.Toolbox()
 
@@ -136,7 +140,7 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
     # return best_individual
 
 def solve(fn, pas=1, logger=None, is_hop=True, datadir='data/hop', logdir='results/hop'):
-    print(f'solving {fn} pas {pas}')
+    print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}]solving {fn} pas {pas}')
     path = os.path.join(datadir, fn)
     flog = open(f'{logdir}/{fn[:-5]}_{pas}.txt', 'w+')
 
@@ -152,6 +156,7 @@ def solve(fn, pas=1, logger=None, is_hop=True, datadir='data/hop', logdir='resul
     while not run(inp, flog, logger=logger, is_hop=is_hop):
         flog = open(f'{logdir}/{fn[:-5]}_{pas}.txt', 'w+')
         flog.write(f'{fn}\n')
+
     print(f'done solved {fn}')
     
 
@@ -159,15 +164,6 @@ if __name__ == "__main__":
     logger = init_log()
     os.makedirs('results/hop', exist_ok=True)
     os.makedirs('results/layer', exist_ok=True)
-
-    # for i in range(10):
-    #     joblib.Parallel(n_jobs=8)(
-    #         joblib.delayed(solve)(fn, pas=i, logger=logger, is_hop=True, datadir='data/hop', logdir='results/hop') for fn in os.listdir('data/hop')
-    #     )
-
-    #     joblib.Parallel(n_jobs=8)(
-    #         joblib.delayed(solve)(fn, pas=i, logger=logger, is_hop=False, datadir='data/layer', logdir='results/layer') for fn in os.listdir('data/layer')
-    #     )
 
     rerun = list(set([tmp.replace('\n', '') for tmp in open('run_hop_total.txt', 'r').readlines()])) + \
             list(set([tmp.replace('\n', '') for tmp in open('run_layer_total.txt', 'r').readlines()]))
@@ -190,7 +186,7 @@ if __name__ == "__main__":
         pases = pases + [i] * len(rerun_layer)
 
     joblib.Parallel(n_jobs=16)(
-        joblib.delayed(solve)(fn, pas=pas, logger=logger, is_hop=True if is_hop == 'hop' else False, datadir=f'data/{is_hop}', logdir=f'results/{is_hop}') for \
+        joblib.delayed(solve)(fn, pas=pas, logger=logger, is_hop=True if 'hop' in is_hops else False, datadir=f'data/{is_hop}', logdir=f'results/{is_hop}') for \
             (pas, is_hop, fn) in zip(pases, is_hops, tests)
     )
 
