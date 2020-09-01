@@ -8,6 +8,7 @@ import numpy as np
 import joblib
 import time
 import argparse
+from datetime import datetime
 
 from utils.input import WusnInput
 from constructor.binary import Layer
@@ -164,7 +165,7 @@ def run_ga(fns, flog, logger=None):
     return True
 
 def solve(fns, pas, logger=None, hop_dir='./data/medium/hop', layer_dir='./data/medium/layer'):
-    print(f'solving {fns} pas {pas}')
+    print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] solving {fns} pas {pas}')
 
     # inps = [WusnInput.from_file(tmp) for tmp in fns]
 
