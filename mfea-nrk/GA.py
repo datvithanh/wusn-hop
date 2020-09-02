@@ -14,7 +14,7 @@ from utils.input import WusnInput
 from constructor.nrk import Nrk
 from utils.logger import init_log
 
-N_GENS = 100
+N_GENS = 200
 POPULATION_SIZE = 300
 CXPB = 0.8
 MUTPB = 0.2
