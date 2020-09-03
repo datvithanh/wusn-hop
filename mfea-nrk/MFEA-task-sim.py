@@ -167,38 +167,37 @@ def run_ga(fns, flog, logger=None):
 def solve(fns, pas, logger=None, hop_dir='./data/medium/hop', layer_dir='./data/medium/layer'):
     print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] solving {fns} pas {pas}')
 
-    # inps = [WusnInput.from_file(tmp) for tmp in fns]
-
-    # logger.info(f"prepare input data from path {hop_path} and {layer_path}")
-    # logger.info("num generation: %s" % N_GENS)
-    # logger.info("population size: %s" % POP_SIZE)
-    # logger.info("crossover probability: %s" % CXPB)
-    # logger.info("mutation probability: %s" % MUTPB)
-    # logger.info("run GA....")
-    # if os.path.exists(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}"):
-    #     print("existed", pas)
-    #     return
-
-    flog = open(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
+    flog = open(f"results/rmp/rmp_{CXPB}/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
 
     flog.write(f'{fns}\n')
 
     while not run_ga(fns, flog, logger):
-        flog = open(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
+        flog = open(f"results/rmp/rmp_{CXPB}/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
         flog.write(f'{fns}\n')
 
     print(f'done solved {fns[1]}')
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--rmp', type=float, default=0.8)
+    parser.add_argument('--task-file', type=str, default='data/tasks/run_total.txt', help='path to task file')
+
+    args = parser.parse_args()
+
+    CXPB = args.rmp
 
     logger = init_log()
-    os.makedirs('results/mfea11', exist_ok=True)
-    os.makedirs('results/mfea31', exist_ok=True)
-    os.makedirs('results/mfea13', exist_ok=True)
-    os.makedirs('results/mfea33', exist_ok=True)
-    # lines = [tmp.replace('\n', '') for tmp in open('run_total_medium.txt', 'r').readlines()]
+    # os.makedirs('results/mfea11', exist_ok=True)
+    # os.makedirs('results/mfea31', exist_ok=True)
+    # os.makedirs('results/mfea13', exist_ok=True)
+    # os.makedirs('results/mfea33', exist_ok=True)
+    os.makedirs(f'results/rmp/rmp_{CXPB}/mfea11', exist_ok=True)
+    os.makedirs(f'results/rmp/rmp_{CXPB}/mfea31', exist_ok=True)
+    os.makedirs(f'results/rmp/rmp_{CXPB}/mfea13', exist_ok=True)
+    os.makedirs(f'results/rmp/rmp_{CXPB}/mfea33', exist_ok=True)
 
-    lines = [tmp.replace('\n', '') for tmp in open('run_total.txt', 'r').readlines()]
+    lines = [tmp.replace('\n', '') for tmp in open(args.task_file, 'r').readlines()]
 
     tests, pases = zip(*[tmp.split('\t') for tmp in lines])
     tests = [tmp.split(' ') for tmp in tests]
