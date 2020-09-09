@@ -164,15 +164,19 @@ def run_ga(fns, flog, logger=None):
 
     return True
 
-def solve(fns, pas, logger=None, hop_dir='./data/medium/hop', layer_dir='./data/medium/layer'):
+def solve(fns, pas, logger=None):
     print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] solving {fns} pas {pas}')
+    if 'small' in fns:
+        size = 'small'
+    else: 
+        size = 'medium'
 
-    flog = open(f"results/rmp/rmp_{CXPB}/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
+    flog = open(f"results/{size}/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
 
     flog.write(f'{fns}\n')
 
     while not run_ga(fns, flog, logger):
-        flog = open(f"results/rmp/rmp_{CXPB}/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
+        flog = open(f"results/{size}/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
         flog.write(f'{fns}\n')
 
     print(f'done solved {fns[1]}')
@@ -180,8 +184,9 @@ def solve(fns, pas, logger=None, hop_dir='./data/medium/hop', layer_dir='./data/
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--rmp', type=float, default=0.8)
+    parser.add_argument('--rmp', type=float, default=0.1)
     parser.add_argument('--task-file', type=str, default='data/tasks/run_total.txt', help='path to task file')
+    parser.add_argument('--n-jobs', type=int, default=8)
 
     args = parser.parse_args()
 
@@ -205,7 +210,7 @@ if __name__ == '__main__':
     print(len(tests))
     print(len(pases))
     
-    joblib.Parallel(n_jobs=32)(
+    joblib.Parallel(n_jobs=args.n_jobs)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
     )
     # for fn, pas in zip(tests, pases):
