@@ -59,7 +59,7 @@ def estimate(x, y, inp: DemsInput):
     id2 = int(y // inp.cellsize)
     xx = [id1 * inp.cellsize, (id1+1) * inp.cellsize]
     yy = [id2 * inp.cellsize, (id2+1) * inp.cellsize]
-    z = [[inp.height[id1][id2], inp.height[id1][id2+1]], [inp.height[id1+1][id2], inp.height[id1+1][id2+1]]]
+    z = [[inp.height[id1][id2], inp.height[id1][min(199, id2+1)]], [inp.height[min(199, id1+1)][id2], inp.height[min(199, id1+1)][min(199, id2+1)]]]
     plane = interpolate.interp2d(xx, yy, z)
     return plane(x, y)[0]
 
