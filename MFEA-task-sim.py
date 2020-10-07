@@ -31,10 +31,16 @@ def init_individual(num_of_relays, num_of_sensors):
 def run_ga(fns, flog, logger=None):
     if logger is None:
         raise Exception("Error: logger is None!")
+    
+    ## large
+    # max_relays = 50
+    # max_hops = 16
 
+    ## medium
     # max_relays = 30
     # max_hops = 12
 
+    # small
     max_relays = 14
     max_hops = 8
 
