@@ -90,6 +90,7 @@ def run_ga(fns, flog, logger=None):
 
         return ind1, ind2
 
+    # optimize this to vector operation
     def mutate(ind, mu=0, sigma=0.2, indpb=1):
         size = len(ind)
 
