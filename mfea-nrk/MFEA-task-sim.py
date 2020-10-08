@@ -90,13 +90,10 @@ def run_ga(fns, flog, logger=None):
 
         return ind1, ind2
 
-    # optimize this to vector operation
     def mutate(ind, mu=0, sigma=0.2, indpb=1):
         size = len(ind)
-
-        for i in range(size):
-            if np.random.random() < indpb:
-                ind[i] += random.gauss(mu, sigma)
+        
+        ind = list(np.array(ind) + np.random.normal(mu, sigma, size))
 
         return ind
 
