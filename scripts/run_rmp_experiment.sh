@@ -1,4 +1,4 @@
-python mfea-nrk/MFEA-task-sim.py --task-file data/tasks/run_uu_pvalue.txt --rmp 0.1
+python mfea-nrk/MFEA-task-sim.py --task-file data/tasks/run_uu_pvalue.txt --rmp 0.1 --n-jobs 6
 # python mfea-nrk/MFEA-task-sim.py --task-file data/tasks/run_total_uu.txt --rmp 0.1
 # python mfea-nrk/MFEA-task-sim.py --task-file data/tasks/run_total_uu.txt --rmp 0.2
 # python mfea-nrk/MFEA-task-sim.py --task-file data/tasks/run_total_uu.txt --rmp 0.3

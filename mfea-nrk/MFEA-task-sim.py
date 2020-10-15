@@ -199,6 +199,8 @@ if __name__ == '__main__':
 
     print(len(tests))
     print(len(pases))
+    tests = tests[::-1]
+    pases = pases[::-1]
     
     joblib.Parallel(n_jobs=args.n_jobs)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
