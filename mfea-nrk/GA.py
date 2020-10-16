@@ -165,27 +165,31 @@ if __name__ == "__main__":
     os.makedirs('results/hop', exist_ok=True)
     os.makedirs('results/layer', exist_ok=True)
 
-    rerun = list(set([tmp.replace('\n', '') for tmp in open('run_hop_total.txt', 'r').readlines()])) + \
-            list(set([tmp.replace('\n', '') for tmp in open('run_layer_total.txt', 'r').readlines()]))
+    rerun = list(set([tmp.replace('\n', '') for tmp in open('data/tasks/run_hop_total.txt', 'r').readlines()])) + \
+            list(set([tmp.replace('\n', '') for tmp in open('data/tasks/run_layer_total.txt', 'r').readlines()]))
 
     pases = []
     tests = []
     is_hops = []
 
-    for i in range(10):
-        rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if f'{tmp[:-5]}_{i}.txt' in rerun]
+    for i in range(60):
+        # rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if f'{tmp[:-5]}_{i}.txt' in rerun]
+        rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if 'uu' in tmp and 'r25' in tmp and '_0' in tmp]
 
         tests = tests + rerun_hop
         is_hops = is_hops + ['small/hop'] * len(rerun_hop)
         pases = pases + [i] * len(rerun_hop)
 
-        rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if f'{tmp[:-5]}_{i}.txt' in rerun]
+        # rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if f'{tmp[:-5]}_{i}.txt' in rerun]
+        rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if 'uu' in tmp and 'r25' in tmp]
 
         tests = tests + rerun_layer
         is_hops = is_hops + ['small/layer'] * len(rerun_layer)
         pases = pases + [i] * len(rerun_layer)
 
-    joblib.Parallel(n_jobs=32)(
+    print(len(tests))
+
+    joblib.Parallel(n_jobs=6)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger, is_hop=True if 'hop' in is_hop else False, datadir=f'data/{is_hop}', logdir=f'results/{is_hop}') for \
             (pas, is_hop, fn) in zip(pases, is_hops, tests)
     )
