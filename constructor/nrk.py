@@ -114,7 +114,6 @@ class Nrk:
         # calculate max energy consumption
         hop_count = [0]*(1 + self._num_of_relays + self._num_of_sensors)
         hop_count[0] = 1
-        num_child = [0] * (1 + self._num_of_relays + self._num_of_sensors)
 
         queue = deque()
         for r in selected_relays:
@@ -133,46 +132,40 @@ class Nrk:
 
         # not a tree
         if min(hop_count[1 + self._num_of_relays:]) == 0:
-            return None, None, None
+            return None, None
 
         # exceed hop count
         if max(hop_count) - 1 > self._hop:
-            return None, None, None
+            return None, None
 
-        for depth in range(self._hop, 1, -1):
-            for index, value in enumerate(hop_count):
-                if value == depth:
-                    u = index
-                    while u!=0:
-                        u = father[u]
-                        num_child[u] += 1
-
-        return father, num_child, hop_count
+        return father, hop_count
 
     def get_loss(self, individual):
-        father, num_child, hop_count = self.decode_genes(individual)
+        father, hop_count = self.decode_genes(individual)
 
-        if None in [father, num_child]:
-            return float('inf')#, father, num_child
+        if None in [father]:
+            return float('inf')
 
         max_energy_consumption = 0
-
         if self._is_hop == True:
             for index, value in enumerate(hop_count):
                 if value > 0:
                     if index == 0:
                         continue
+                    num_children = len([tmp for tmp in father if tmp == index])
                     e_t = WusnConstants.k_bit * WusnConstants.e_elec + \
                         WusnConstants.k_bit * WusnConstants.e_fs * distance(self._points[index], self._points[father[index]]) ** 2
                     e_r = WusnConstants.k_bit * WusnConstants.e_elec                
 
-                    e = (num_child[index] + (index > self._num_of_relays)) * e_t + num_child[index] * e_r + e_t
+                    e = (num_children + (index > self._num_of_relays)) * e_t + num_children * e_r + e_t
                     
-                    e = num_child[index] * e_r + \
-                        (num_child[index] + (index > self._num_of_relays)) * WusnConstants.E_da + \
+                    e = num_children * e_r + \
+                        (num_children + (index > self._num_of_relays)) * WusnConstants.E_da + \
                         e_t
 
                     max_energy_consumption = max(max_energy_consumption, e)
+                    # \widetilde{E}_{s_i}  =  num'_i * \widetilde{E_r} + (num'_i + 1)*\widetilde{E}_{DA}) + \widetilde{E_t}_{s_i}
+                    # \widetilde{E}_{l_j}  =  num''_j * (\widetilde{E_r} + \widetilde{E}_{DA}) + \widetilde{E_t}_{l_j}
         else:
             # iterate through the sensors and calculate each sensor's loss based on it's father
             for index, relay_index in enumerate(father[-len(self._sensors):]):
@@ -180,11 +173,13 @@ class Nrk:
                 max_energy_consumption = max(max_energy_consumption, sensor_loss)
 
             # iterate through the relay nodes and calculate each relay's loss based on the number of sensors it connects to
-            for index, value in enumerate(num_child[1:1+self._num_of_relays]):
+            
+            for index in range(0, self._num_of_relays):
+                value = len([tmp for tmp in father if tmp == index+1])
                 relay_loss = WusnConstants.k_bit * (
                     value*(WusnConstants.e_elec + WusnConstants.e_da) + \
                     WusnConstants.e_mp * distance(self._relays[index], self._bs)**4
                 )
                 max_energy_consumption = max(max_energy_consumption, relay_loss)
 
-        return max_energy_consumption#, father, num_child
+        return max_energy_consumption

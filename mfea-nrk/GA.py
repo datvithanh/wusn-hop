@@ -126,10 +126,10 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
         # b = round(min_value, 6)
         pop[:] = intermediate[:]
 
-        father, num_child, _ = constructor.decode_genes(best_individual)
+        father, _ = constructor.decode_genes(best_individual)
         obj = constructor.get_loss(best_individual)
 
-        flog.write(f'{best_individual}\t{father}\t{num_child}\t{obj}\n')
+        flog.write(f'{best_individual}\t{father}\t{obj}\n')
 
         # logger.info("Min value this pop %d : %f " % (g, min_value))
     obj = constructor.get_loss(best_individual)
@@ -165,23 +165,18 @@ if __name__ == "__main__":
     os.makedirs('results/hop', exist_ok=True)
     os.makedirs('results/layer', exist_ok=True)
 
-    rerun = list(set([tmp.replace('\n', '') for tmp in open('data/tasks/run_hop_total.txt', 'r').readlines()])) + \
-            list(set([tmp.replace('\n', '') for tmp in open('data/tasks/run_layer_total.txt', 'r').readlines()]))
-
     pases = []
     tests = []
     is_hops = []
 
-    for i in range(60):
-        # rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if f'{tmp[:-5]}_{i}.txt' in rerun]
-        rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if 'uu' in tmp and 'r25' in tmp and '_0' in tmp]
-
+    for i in range(5):
+        rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if not (('uu' in tmp and 'r50' in tmp and '_40' in tmp) or ('uu' not in tmp and ('r50' in tmp or '_40' in tmp))) and tmp != '.DS_Store']
+        
         tests = tests + rerun_hop
         is_hops = is_hops + ['small/hop'] * len(rerun_hop)
         pases = pases + [i] * len(rerun_hop)
 
-        # rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if f'{tmp[:-5]}_{i}.txt' in rerun]
-        rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if 'uu' in tmp and 'r25' in tmp]
+        rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if not (('no' in tmp or 'ga' in tmp) and 'r50' in tmp) and tmp != '.DS_Store']
 
         tests = tests + rerun_layer
         is_hops = is_hops + ['small/layer'] * len(rerun_layer)
@@ -189,7 +184,7 @@ if __name__ == "__main__":
 
     print(len(tests))
 
-    joblib.Parallel(n_jobs=6)(
+    joblib.Parallel(n_jobs=1)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger, is_hop=True if 'hop' in is_hop else False, datadir=f'data/{is_hop}', logdir=f'results/{is_hop}') for \
             (pas, is_hop, fn) in zip(pases, is_hops, tests)
     )
