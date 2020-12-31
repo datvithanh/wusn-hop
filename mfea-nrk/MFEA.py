@@ -196,7 +196,7 @@ def instances(single, multi):
     layer_dir='./data/layer'
 
     if single == 1 and multi == 1:
-        rerun = set([tmp.replace('\n', '') for tmp in open('run_hop.txt', 'r').readlines()])
+        rerun = set([tmp.replace('\n', '') for tmp in open('data/tasks/run_hop_total.txt', 'r').readlines()])
         
         for i in range(10):
             rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
@@ -209,7 +209,7 @@ def instances(single, multi):
             pases = pases + [i] * len(rerun_hop)
 
     if single == 1 and multi == 3:
-        rerun = set([tmp.replace('\n', '') for tmp in open('run_hop.txt', 'r').readlines()])
+        rerun = set([tmp.replace('\n', '') for tmp in open('data/tasks/run_hop_total.txt', 'r').readlines()])
         
         def transform13(j):
             r = int(j.split('_')[-3][1:])
@@ -245,7 +245,7 @@ def instances(single, multi):
             pases = pases + [i] * len(rerun_hop)
 
     if single == 3 and multi == 1:
-        rerun = set([tmp.replace('\n', '') for tmp in open('run_hop.txt', 'r').readlines()])
+        rerun = set([tmp.replace('\n', '') for tmp in open('data/tasks/run_hop_total.txt', 'r').readlines()])
 
         for i in range(10):
             rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
@@ -278,7 +278,7 @@ def instances(single, multi):
 
 
     if single == 3 and multi == 3:
-        rerun = set([tmp.replace('\n', '') for tmp in open('run_layer.txt', 'r').readlines()])
+        rerun = set([tmp.replace('\n', '') for tmp in open('data/tasks/run_layer_total.txt', 'r').readlines()])
 
         def transform33(j):
             splt = j.split('_')
