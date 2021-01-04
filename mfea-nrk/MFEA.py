@@ -192,8 +192,8 @@ def solve(fns, pas=1, logger=None, hop_dir='./data/hop', layer_dir='./data/layer
 def instances(single, multi):
     pases = []
     tests = []
-    hop_dir='./data/hop'
-    layer_dir='./data/layer'
+    hop_dir='./data/small/hop'
+    layer_dir='./data/small/layer'
 
     if single == 1 and multi == 1:
         rerun = set([tmp.replace('\n', '') for tmp in open('data/tasks/run_hop_total.txt', 'r').readlines()])
