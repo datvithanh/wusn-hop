@@ -131,7 +131,7 @@ if __name__ == '__main__':
                     ok, sn = False, None
                     while not ok:
                         sn = point(dem, (0, args.W), (0, args.H), z_off=-args.depth, cls=SensorNode, distribution=args.distribution)
-                        ok = is_covered(sn, bs, relays, r)
+                        ok = is_covered(sn, bs, relays, 2 * r)
                     sensors.append(sn)
 
                 res = WusnInput(_W=args.W, _H=args.H, _depth=args.depth,
@@ -149,7 +149,7 @@ if __name__ == '__main__':
                     ok, sn = False, None
                     while True:
                         sn = point(dem, (0, args.W), (0, args.H), z_off=-args.depth, cls=SensorNode, distribution=args.distribution)
-                        if hop_is_covered(sn, bs, relays, sensors, r):
+                        if hop_is_covered(sn, bs, relays, sensors, 2*r):
                             break
                     sensors.append(sn)
                 
