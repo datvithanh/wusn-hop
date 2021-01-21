@@ -15,7 +15,7 @@ from utils.logger import init_log
 
 N_GENS = 100
 POP_SIZE = 300
-CXPB = 0.6
+CXPB = 0.2
 MUTPB = 0.2
 TERMINATE = 30
 
