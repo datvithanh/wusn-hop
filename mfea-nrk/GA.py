@@ -177,7 +177,7 @@ if __name__ == "__main__":
     print(len(tests))
     print(tests)
 
-    joblib.Parallel(n_jobs=1)(
+    joblib.Parallel(n_jobs=4)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger, is_hop=True if 'hop' in is_hop else False, datadir=f'data/{is_hop}', logdir=f'results/{is_hop}') for \
             (pas, is_hop, fn) in zip(pases, is_hops, tests)
     )
