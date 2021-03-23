@@ -14,12 +14,14 @@ from utils.input import WusnInput
 from constructor.binary import Layer
 from constructor.nrk import Nrk
 from utils.logger import init_log
+from utils import config
 
-N_GENS = 200
-POP_SIZE = 300
-CXPB = 0.8
-MUTPB = 0.2
+N_GENS = config.N_GENS
+POP_SIZE = config.POP_SIZE
+CXPB = config.MFEA_CXPB
 TERMINATE = 30
+num_of_relays = config.MAX_RELAYS
+num_hops = config.MAX_HOPS
 
 def init_individual(num_of_relays, num_of_sensors):
     length = 2 * (num_of_sensors + num_of_relays + 1)
@@ -31,12 +33,6 @@ def init_individual(num_of_relays, num_of_sensors):
 def run_ga(fns, flog, logger=None):
     if logger is None:
         raise Exception("Error: logger is None!")
-
-    # max_relays = 30
-    # max_hops = 12
-
-    max_relays = 14
-    max_hops = 10
 
     num_tasks = len(fns)
     inputs = []
@@ -78,7 +74,7 @@ def run_ga(fns, flog, logger=None):
         # factorial rank << -> scalar fitness >> 
         return pop_skill_factor, pop_scalar_fitness
 
-    def crossover(ind1, ind2, indpb=0.2):
+    def crossover(ind1, ind2):
         r1, r2 = np.random.randint(0, len(ind1)), np.random.randint(0, len(ind1))
         r1, r2 = min(r1, r2), max(r1, r2)
         
@@ -90,7 +86,7 @@ def run_ga(fns, flog, logger=None):
 
         return ind1, ind2
 
-    def mutate(ind, mu=0, sigma=0.2, indpb=1):
+    def mutate(ind, mu=config.ELEMENT_MUTATION_MU, sigma=config.ELEMENT_MUTATION_SIGMA, indpb=config.ELEMENT_MUTATION_RATE):
         size = len(ind)
         
         ind = list(np.array(ind) + np.random.normal(mu, sigma, size))

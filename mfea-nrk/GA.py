@@ -13,15 +13,12 @@ from datetime import datetime
 from utils.input import WusnInput
 from constructor.nrk import Nrk
 from utils.logger import init_log
+from utils import config
 
-N_GENS = 200
-POPULATION_SIZE = 300
-CXPB = 0.8
-MUTPB = 0.2
-
-# creator.create("FitnessMin", base.Fitness, weights=(-1.,))
-# FitnessMin = creator.FitnessMin
-# creator.create("Individual", list, fitness=FitnessMin)
+N_GENS = config.N_GENS
+POPULATION_SIZE = config.POP_SIZE
+CXPB = config.GA_CXPB
+MUTPB = config.MUTPB
 
 def init_individual(num_of_relays, num_of_sensors):
     length = 2 * (num_of_sensors + num_of_relays + 1)
@@ -33,7 +30,7 @@ def init_individual(num_of_relays, num_of_sensors):
 def get_fitness(individual, constructor):
     return constructor.get_loss(individual)
 
-def crossover(ind1, ind2, indpb=0.2):
+def crossover(ind1, ind2):
     r1, r2 = np.random.randint(0, len(ind1)), np.random.randint(0, len(ind1))
     r1, r2 = min(r1, r2), max(r1, r2)
     
@@ -45,7 +42,7 @@ def crossover(ind1, ind2, indpb=0.2):
 
     return ind1, ind2
 
-def mutate(ind, mu=0, sigma=0.2, indpb=0.4):
+def mutate(ind, mu=config.ELEMENT_MUTATION_MU, sigma=config.ELEMENT_MUTATION_SIGMA, indpb=config.ELEMENT_MUTATION_RATE):
     size = len(ind)
 
     for i in range(size):
@@ -73,7 +70,7 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
     toolbox.register("individual", init_individual, inp.num_of_relays, inp.num_of_sensors)
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
     toolbox.register("mate", crossover)
-    toolbox.register("mutate", mutate, indpb=0.2)
+    toolbox.register("mutate", mutate, indpb=config.ELEMENT_MUTATION_RATE)
     toolbox.register("select", tools.selTournament, tournsize=20)
     toolbox.register("evaluate", get_fitness, constructor=constructor)
 
@@ -126,13 +123,10 @@ def run(inp: WusnInput, flog, logger = None, is_hop=True):
 
         flog.write(f'{best_individual}\t{father}\t{obj}\n')
 
-        # logger.info("Min value this pop %d : %f " % (g, min_value))
     obj = constructor.get_loss(best_individual)
     if obj > 10:
         return False
     return True
-    # logger.info("Finished! Best individual: %s, fitness: %s" % (best_individual, toolbox.evaluate(best_individual)))
-    # return best_individual
 
 def solve(fn, pas=1, logger=None, is_hop=True, datadir='data/hop', logdir='results/hop'):
     print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}]solving {fn} pas {pas}')

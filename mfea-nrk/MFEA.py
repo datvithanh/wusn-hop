@@ -14,13 +14,15 @@ from constructor.binary import Layer
 from constructor.nrk import Nrk
 from utils.logger import init_log
 
+from utils import config
 import pdb
 
-N_GENS = 200
-POP_SIZE = 300
-CXPB = 0.2
-MUTPB = 0.2
+N_GENS = config.N_GENS
+POP_SIZE = config.POP_SIZE
+CXPB = config.MFEA_CXPB
 TERMINATE = 30
+num_of_relays = config.MAX_RELAYS
+num_hops = config.MAX_HOPS
 
 def init_individual(num_of_relays, num_of_sensors):
     length = 2 * (num_of_sensors + num_of_relays + 1)
@@ -30,12 +32,9 @@ def init_individual(num_of_relays, num_of_sensors):
     return individual
 
 def run_ga(fns, flog, logger=None):
+    global num_of_relays, num_hops
     if logger is None:
         raise Exception("Error: logger is None!")
-
-    # logger.info("Start!")
-    num_of_relays = 14
-    max_hop = 10
 
     num_tasks = len(fns)
     inputs = []
@@ -45,7 +44,7 @@ def run_ga(fns, flog, logger=None):
         if 'layer' in fn:
             constructors.append(Nrk(inputs[-1], max_relay=num_of_relays, is_hop=False, hop=1000))
         else:
-            constructors.append(Nrk(inputs[-1], max_relay=num_of_relays, is_hop=True, hop=max_hop))
+            constructors.append(Nrk(inputs[-1], max_relay=num_of_relays, is_hop=True, hop=num_hops))
 
     num_of_relays = max([inp.num_of_relays for inp in inputs])
     num_of_sensors = max([inp.num_of_sensors for inp in inputs])
@@ -79,7 +78,7 @@ def run_ga(fns, flog, logger=None):
         # factorial rank << -> scalar fitness >> 
         return pop_skill_factor, pop_scalar_fitness
 
-    def crossover(ind1, ind2, indpb=0.2):
+    def crossover(ind1, ind2):
         r1, r2 = np.random.randint(0, len(ind1)), np.random.randint(0, len(ind1))
         r1, r2 = min(r1, r2), max(r1, r2)
         
@@ -91,7 +90,7 @@ def run_ga(fns, flog, logger=None):
 
         return ind1, ind2
 
-    def mutate(ind, mu=0, sigma=0.2, indpb=1):
+    def mutate(ind, mu=config.ELEMENT_MUTATION_MU, sigma=config.ELEMENT_MUTATION_SIGMA, indpb=config.ELEMENT_MUTATION_RATE):
         size = len(ind)
 
         for i in range(size):
@@ -167,7 +166,7 @@ def run_ga(fns, flog, logger=None):
         best_objs = [constructor.get_loss(transform_genes(indi, inp.num_of_sensors)) \
             for indi, constructor, inp in zip(best_indis, constructors, inputs)]
 
-        # print(best_objs)
+        print(g, best_objs)
         for task in range(num_tasks):
             flog.write(f'{fathers[task]}\n')
         for task in range(num_tasks):
