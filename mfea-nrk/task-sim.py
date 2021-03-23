@@ -13,7 +13,7 @@ from constructor.binary import Layer
 from constructor.nrk import Nrk
 from utils.logger import init_log
 
-N_GENS = 100
+N_GENS = 200
 POP_SIZE = 300
 CXPB = 0.2
 MUTPB = 0.2
