@@ -153,9 +153,15 @@ def run_ga(fns, flog, logger=None):
             if not best_indis[i]:
                 best_indis[i] = pop[0]
 
+        fathers = [constructor.decode_genes(transform_genes(indi, inp.num_of_sensors)) \
+            for indi, constructor, inp in zip(best_indis, constructors, inputs)]
+        fathers = [tmp[0] for tmp in fathers]
+
         best_objs = [constructor.get_loss(transform_genes(indi, inp.num_of_sensors)) \
             for indi, constructor, inp in zip(best_indis, constructors, inputs)]
 
+        for task in range(num_tasks):
+            flog.write(f'{fathers[task]}\n')
         for task in range(num_tasks):
             flog.write(f'{best_objs[task]}\n')
     
@@ -355,6 +361,6 @@ if __name__ == '__main__':
     print(len(tests))
     print(len(pases))
 
-    joblib.Parallel(n_jobs=4)(
+    joblib.Parallel(n_jobs=1)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
     )
