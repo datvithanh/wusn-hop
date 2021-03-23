@@ -14,6 +14,8 @@ from constructor.binary import Layer
 from constructor.nrk import Nrk
 from utils.logger import init_log
 
+import pdb
+
 N_GENS = 200
 POP_SIZE = 300
 CXPB = 0.2
@@ -72,6 +74,8 @@ def run_ga(fns, flog, logger=None):
 
         pop_scalar_fitness = [1/(min([pop_factorial_rank[task][i] for task in range(num_tasks)]) + 1) for i in range(len(pop))]
 
+        print(pop_skill_factor)
+        print(sum(pop_skill_factor), len(pop_skill_factor))
         # factorial rank << -> scalar fitness >> 
         return pop_skill_factor, pop_scalar_fitness
 
@@ -160,6 +164,7 @@ def run_ga(fns, flog, logger=None):
         best_objs = [constructor.get_loss(transform_genes(indi, inp.num_of_sensors)) \
             for indi, constructor, inp in zip(best_indis, constructors, inputs)]
 
+        print(best_objs)
         for task in range(num_tasks):
             flog.write(f'{fathers[task]}\n')
         for task in range(num_tasks):
