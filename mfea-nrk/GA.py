@@ -34,11 +34,6 @@ def get_fitness(individual, constructor):
     return constructor.get_loss(individual)
 
 def crossover(ind1, ind2, indpb=0.2):
-    # size = min(len(ind1), len(ind2))
-    # for i in range(size):
-    #     if np.random.random() < indpb:
-    #         ind1[i], ind2[i] = ind2[i], ind1[i]
-
     r1, r2 = np.random.randint(0, len(ind1)), np.random.randint(0, len(ind1))
     r1, r2 = min(r1, r2), max(r1, r2)
     

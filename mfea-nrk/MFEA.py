@@ -74,8 +74,8 @@ def run_ga(fns, flog, logger=None):
 
         pop_scalar_fitness = [1/(min([pop_factorial_rank[task][i] for task in range(num_tasks)]) + 1) for i in range(len(pop))]
 
-        print(pop_skill_factor)
-        print(sum(pop_skill_factor), len(pop_skill_factor))
+        # print(pop_skill_factor)
+        # print(sum(pop_skill_factor), len(pop_skill_factor))
         # factorial rank << -> scalar fitness >> 
         return pop_skill_factor, pop_scalar_fitness
 
@@ -102,14 +102,17 @@ def run_ga(fns, flog, logger=None):
 
     def assortive_mating(pop, pop_skill_factor):
         offsprings = []
+        count1, count2 = 0, 0
         for _ in range(POP_SIZE//2):
             idx1, idx2 = np.random.randint(0, POP_SIZE - 1), np.random.randint(0, POP_SIZE - 1)
             p1, p2 = copy.deepcopy(pop[idx1]), copy.deepcopy(pop[idx2])
 
             if pop_skill_factor[idx1] == pop_skill_factor[idx2] or np.random.random() < CXPB:
+                count1 += 1
                 offs1, offs2 = crossover(p1, p2)
                 offsprings.extend([offs1, offs2])
             else:
+                count2 += 1
                 offs1, offs2 = mutate(p1), mutate(p2)
                 offsprings.extend([offs1, offs2])
 
@@ -164,7 +167,7 @@ def run_ga(fns, flog, logger=None):
         best_objs = [constructor.get_loss(transform_genes(indi, inp.num_of_sensors)) \
             for indi, constructor, inp in zip(best_indis, constructors, inputs)]
 
-        print(best_objs)
+        # print(best_objs)
         for task in range(num_tasks):
             flog.write(f'{fathers[task]}\n')
         for task in range(num_tasks):
