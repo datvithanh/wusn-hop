@@ -170,7 +170,7 @@ if __name__ == "__main__":
     tests = []
     is_hops = []
 
-    for i in range(1):
+    for i in range(2):
         # rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if not (('uu' in tmp and 'r50' in tmp and '_40' in tmp) or ('uu' not in tmp and ('r50' in tmp or '_40' in tmp))) and tmp != '.DS_Store']
         rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if 'ga' in tmp and '_0' in tmp and 'r25' in tmp]
         

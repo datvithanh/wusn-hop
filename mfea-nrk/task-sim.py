@@ -32,7 +32,7 @@ def run_ga(fns, flog, pas, logger=None):
     os.makedirs(f'results/task-sim-{pas}', exist_ok=True)
     # logger.info("Start!")
     num_of_relays = 14
-    max_hop = 8
+    max_hop = 10
 
     num_tasks = len(fns)
     inputs = []

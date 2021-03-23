@@ -33,7 +33,7 @@ def run_ga(fns, flog, logger=None):
 
     # logger.info("Start!")
     num_of_relays = 14
-    max_hop = 8
+    max_hop = 10
 
     num_tasks = len(fns)
     inputs = []
@@ -194,11 +194,12 @@ def instances(single, multi):
     tests = []
     hop_dir='./data/small/hop'
     layer_dir='./data/small/layer'
+    runs = 2
 
     if single == 1 and multi == 1:
         rerun = set([tmp.replace('\n', '') for tmp in open('data/tasks/run_hop_total.txt', 'r').readlines()])
         
-        for i in range(10):
+        for i in range(runs):
             rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
             for j in rerun_hop:
                 single = '_'.join(j.split('_')[:-1]) + '.json'
@@ -219,7 +220,7 @@ def instances(single, multi):
 
             return multi3
 
-        for i in range(10):
+        for i in range(runs):
             rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
             # rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{transform13(tmp)[:-5]}_{i}.txt' in rerun]
             for j in rerun_hop:
@@ -247,7 +248,7 @@ def instances(single, multi):
     if single == 3 and multi == 1:
         rerun = set([tmp.replace('\n', '') for tmp in open('data/tasks/run_hop_total.txt', 'r').readlines()])
 
-        for i in range(10):
+        for i in range(runs):
             rerun_hop = [tmp for tmp in os.listdir(hop_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
             for j in rerun_hop:
                 splt = j.split('_')
@@ -300,7 +301,7 @@ def instances(single, multi):
             
             return multi3
 
-        for i in range(10):
+        for i in range(runs):
             rerun_hop = [tmp for tmp in os.listdir(layer_dir) if f'{tmp[:-5]}_{i}.txt' in rerun]
             # rerun_hop = [tmp for tmp in os.listdir(layer_dir) if f'{transform33(tmp)[:-5]}_{i}.txt' in rerun]
 
@@ -348,9 +349,12 @@ if __name__ == '__main__':
     os.makedirs('results/mfea33', exist_ok=True)
     tests, pases = instances(args.single, args.multi)
 
+    aha = list(zip(tests, pases))
+    aha = [(tmp1, tmp2) for tmp1, tmp2 in aha if 'ga' in tmp1[-1] and 'r25' in tmp1[-1] and '_0' in tmp1[-1]]
+    tests, pases = zip(*aha)
     print(len(tests))
     print(len(pases))
 
-    joblib.Parallel(n_jobs=8)(
+    joblib.Parallel(n_jobs=4)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
     )
