@@ -36,7 +36,7 @@ def run_ga(fns, flog, logger=None):
     # max_hops = 12
 
     max_relays = 14
-    max_hops = 8
+    max_hops = 10
 
     num_tasks = len(fns)
     inputs = []

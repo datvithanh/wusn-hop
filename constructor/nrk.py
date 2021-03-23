@@ -6,6 +6,8 @@ from collections import deque
 from utils.input import WusnInput, WusnConstants
 from utils.point import distance
 
+import pdb
+
 class Nrk:
     def __init__(self, inp: WusnInput, max_relay=10, hop=6, is_hop=True):
         self._bs  = inp.BS
@@ -37,8 +39,8 @@ class Nrk:
         edges = [[] for _ in range(len(points))]
 
         for i in range(inp.num_of_relays):
-            edges[0].append(i)
-            edges[i].append(0)
+            edges[0].append(i+1)
+            edges[i+1].append(0)
         
         for rl in inp.relays:
             for sn in inp.sensors:
@@ -46,9 +48,11 @@ class Nrk:
                     u, v = point2idx[rl], point2idx[sn]
                     edges[u].append(v)
                     edges[v].append(u)
+
         if self._is_hop == True:
-            for sn1 in inp.sensors:
-                for sn2 in inp.sensors:
+            for i in range(len(inp.sensors)):
+                for j in range(i+1, len(inp.sensors)):
+                    sn1, sn2 = inp.sensors[i], inp.sensors[j]
                     if distance(sn1, sn2) <= 2 * inp.radius:
                         u, v = point2idx[sn1], point2idx[sn2]
                         if u == v:
