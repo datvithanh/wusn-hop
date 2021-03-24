@@ -159,16 +159,9 @@ def run_ga(fns, flog, logger=None):
             if not best_indis[i]:
                 best_indis[i] = pop[0]
 
-        fathers = [constructor.decode_genes(transform_genes(indi, inp.num_of_sensors)) \
-            for indi, constructor, inp in zip(best_indis, constructors, inputs)]
-        fathers = [tmp[0] for tmp in fathers]
-
         best_objs = [constructor.get_loss(transform_genes(indi, inp.num_of_sensors)) \
             for indi, constructor, inp in zip(best_indis, constructors, inputs)]
 
-        print(g, best_objs)
-        for task in range(num_tasks):
-            flog.write(f'{fathers[task]}\n')
         for task in range(num_tasks):
             flog.write(f'{best_objs[task]}\n')
     
@@ -207,7 +200,7 @@ def instances(single, multi):
     tests = []
     hop_dir='./data/small/hop'
     layer_dir='./data/small/layer'
-    runs = 2
+    runs = 1
 
     if single == 1 and multi == 1:
         rerun = set([tmp.replace('\n', '') for tmp in open('data/tasks/run_hop_total.txt', 'r').readlines()])
@@ -362,9 +355,7 @@ if __name__ == '__main__':
     os.makedirs('results/mfea33', exist_ok=True)
     tests, pases = instances(args.single, args.multi)
 
-    aha = list(zip(tests, pases))
-    aha = [(tmp1, tmp2) for tmp1, tmp2 in aha if 'ga' in tmp1[-1] and 'r25' in tmp1[-1] and '_0' in tmp1[-1]]
-    tests, pases = zip(*aha)
+
     print(len(tests))
     print(len(pases))
 
