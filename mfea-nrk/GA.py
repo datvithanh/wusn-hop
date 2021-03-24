@@ -170,9 +170,9 @@ if __name__ == "__main__":
         # rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if not (('no' in tmp or 'ga' in tmp) and 'r50' in tmp) and tmp != '.DS_Store']
         rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if 'ga' in tmp and 'r25' in tmp]
 
-        # tests = tests + rerun_layer
-        # is_hops = is_hops + ['small/layer'] * len(rerun_layer)
-        # pases = pases + [i] * len(rerun_layer)
+        tests = tests + rerun_layer
+        is_hops = is_hops + ['small/layer'] * len(rerun_layer)
+        pases = pases + [i] * len(rerun_layer)
 
     print(len(tests))
     print(tests)
