@@ -200,7 +200,7 @@ def instances(single, multi):
     tests = []
     hop_dir='./data/small/hop'
     layer_dir='./data/small/layer'
-    runs = 1
+    runs = 5
 
     if single == 1 and multi == 1:
         rerun = set([tmp.replace('\n', '') for tmp in open('data/tasks/run_hop_total.txt', 'r').readlines()])
