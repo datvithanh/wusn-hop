@@ -18,7 +18,7 @@ from utils import config
 N_GENS = config.N_GENS
 POPULATION_SIZE = config.POP_SIZE
 CXPB = config.GA_CXPB
-MUTPB = config.MUTPB
+MUTPB = config.GA_MUTPB
 
 def init_individual(num_of_relays, num_of_sensors):
     length = 2 * (num_of_sensors + num_of_relays + 1)
@@ -159,23 +159,22 @@ if __name__ == "__main__":
     tests = []
     is_hops = []
 
-    for i in range(2):
-        # rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if not (('uu' in tmp and 'r50' in tmp and '_40' in tmp) or ('uu' not in tmp and ('r50' in tmp or '_40' in tmp))) and tmp != '.DS_Store']
-        rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if 'ga' in tmp and '_0' in tmp and 'r25' in tmp]
+    for i in range(5):
+        rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if not (('uu' in tmp and 'r50' in tmp and '_40' in tmp) or ('uu' not in tmp and ('r50' in tmp or '_40' in tmp))) and tmp != '.DS_Store']
+        # rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if 'ga' in tmp and '_0' in tmp and 'r25' in tmp]
         
         tests = tests + rerun_hop
         is_hops = is_hops + ['small/hop'] * len(rerun_hop)
         pases = pases + [i] * len(rerun_hop)
 
-        # rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if not (('no' in tmp or 'ga' in tmp) and 'r50' in tmp) and tmp != '.DS_Store']
-        rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if 'ga' in tmp and 'r25' in tmp]
+        rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if not (('no' in tmp or 'ga' in tmp) and 'r50' in tmp) and tmp != '.DS_Store']
+        # rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if 'ga' in tmp and 'r25' in tmp]
 
         tests = tests + rerun_layer
         is_hops = is_hops + ['small/layer'] * len(rerun_layer)
         pases = pases + [i] * len(rerun_layer)
 
     print(len(tests))
-    print(tests)
 
     joblib.Parallel(n_jobs=4)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger, is_hop=True if 'hop' in is_hop else False, datadir=f'data/{is_hop}', logdir=f'results/{is_hop}') for \
