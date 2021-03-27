@@ -161,14 +161,14 @@ def run_ga(fns, flog, logger=None):
 def solve(fns, pas, logger=None):
     print(f'[{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}] solving {fns} pas {pas}')
 
-    # flog = open(f"results/rmp{CXPB}/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
-    flog = open(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
+    flog = open(f"results/rmp{CXPB}/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
+    # flog = open(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
 
     flog.write(f'{fns}\n')
 
     while not run_ga(fns, flog, logger):
-        # flog = open(f"results/rmp{CXPB}/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
-        flog = open(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
+        flog = open(f"results/rmp{CXPB}/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
+        # flog = open(f"results/mfea{sum(['layer' in tmp for tmp in fns])}{sum(['hop' in tmp for tmp in fns])}/{pas}", 'w+')
         flog.write(f'{fns}\n')
 
     print(f'done solved {fns[1]}')
@@ -178,21 +178,21 @@ if __name__ == '__main__':
 
     parser.add_argument('--rmp', type=float, default=0.1)
     parser.add_argument('--task-file', type=str, default='data/tasks/run_total.txt', help='path to task file')
-    parser.add_argument('--n-jobs', type=int, default=8)
+    parser.add_argument('--n-jobs', type=int, default=4)
 
     args = parser.parse_args()
 
     CXPB = args.rmp
 
     logger = init_log()
-    # os.makedirs(f'results/rmp{CXPB}/mfea11', exist_ok=True)
-    # os.makedirs(f'results/rmp{CXPB}/mfea31', exist_ok=True)
-    # os.makedirs(f'results/rmp{CXPB}/mfea13', exist_ok=True)
-    # os.makedirs(f'results/rmp{CXPB}/mfea33', exist_ok=True)
-    os.makedirs(f'results/mfea11', exist_ok=True)
-    os.makedirs(f'results/mfea31', exist_ok=True)
-    os.makedirs(f'results/mfea13', exist_ok=True)
-    os.makedirs(f'results/mfea33', exist_ok=True)
+    os.makedirs(f'results/rmp{CXPB}/mfea11', exist_ok=True)
+    os.makedirs(f'results/rmp{CXPB}/mfea31', exist_ok=True)
+    os.makedirs(f'results/rmp{CXPB}/mfea13', exist_ok=True)
+    os.makedirs(f'results/rmp{CXPB}/mfea33', exist_ok=True)
+    # os.makedirs(f'results/mfea11', exist_ok=True)
+    # os.makedirs(f'results/mfea31', exist_ok=True)
+    # os.makedirs(f'results/mfea13', exist_ok=True)
+    # os.makedirs(f'results/mfea33', exist_ok=True)
 
     lines = [tmp.replace('\n', '') for tmp in open(args.task_file, 'r').readlines()]
 
