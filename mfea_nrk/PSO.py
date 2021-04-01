@@ -66,8 +66,9 @@ def run_pso(inp: WusnInput, flog, logger = None, is_hop=True):
     for _ in range(POPULATION_SIZE):
         swarm.append(Particle(dimension))
 
-    best_particle = None
-    best_fitness = float('inf')
+    swarm[0].evaluate(constructor)
+    best_particle = copy.deepcopy(swarm[0].position)
+    best_fitness = swarm[0].current_fitness
 
     for g in range(N_GENS):
         flog.write(f'GEN {g} time {int(time.time())}\n')
