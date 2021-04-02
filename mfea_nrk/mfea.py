@@ -354,11 +354,41 @@ if __name__ == '__main__':
     os.makedirs('results/mfea13', exist_ok=True)
     os.makedirs('results/mfea33', exist_ok=True)
     tests, pases = instances(args.single, args.multi)
-
-
+    
     print(len(tests))
     print(len(pases))
 
     joblib.Parallel(n_jobs=4)(
         joblib.delayed(solve)(fn, pas=pas, logger=logger) for fn, pas in zip(tests, pases)
     )
+    ####
+    """
+    tests, pases = [], []
+    for sg, ml in [(1,1), (3,1), (1,3), (3,3)]:
+        u, v = instances(sg, ml)
+        tests.extend(u)
+        pases.extend(v)
+
+    total = list(zip(tests, pases))
+
+    def ok(test):
+        if 'ga' in test or 'no' in test or 'r50' in test or '_40' in test:
+            return False
+        return True
+    
+    total = [tmp for tmp in total if ok(tmp[0][-1]) and tmp[1] < 3]
+    print(len(total))
+    print(pases)
+    with open('rmp_tests.txt', 'w+') as f:
+        for test, pas in total:
+            tasks = ' '.join([tmp for tmp in test])
+            print(pas)
+            a = test[-1].replace('.json', f'_{pas}.txt').replace('./data/small/hop/', '').replace('./data/small/layer/', '')
+            f.write(f'{tasks}\t{a}\n')
+    tests, pases = zip(*total)
+    print(len(tests), len(pases))
+    """
+    ####
+    
+
+    
