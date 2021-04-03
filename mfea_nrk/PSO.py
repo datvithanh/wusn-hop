@@ -101,12 +101,6 @@ def solve(fn, pas=1, logger=None, is_hop=True, datadir='data/hop', logdir='resul
 
     inp = WusnInput.from_file(path)
 
-    # logger.info("prepare input data from path %s" % path)
-    # logger.info("num generation: %s" % N_GENS)
-    # logger.info("population size: %s" % POPULATION_SIZE)
-    # logger.info("crossover probability: %s" % CXPB)
-    # logger.info("mutation probability: %s" % MUTPB)
-
     flog.write(f'{fn}\n')
     while not run_pso(inp, flog, logger=logger, is_hop=is_hop):
         flog = open(f'{logdir}/{fn[:-5]}_{pas}.txt', 'w+')
