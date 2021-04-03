@@ -1,5 +1,7 @@
 # python mfea_nrk/GA.py
 # python mfea_nrk/PSO.py
+python mfea_nrk/DE.py
+
 
 #python mfea_nrk/mfea.py --single 1 --multi 1
 # python mfea_nrk/mfea.py --single 3 --multi 1
