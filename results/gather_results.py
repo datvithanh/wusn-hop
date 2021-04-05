@@ -2,7 +2,7 @@ import os
 import numpy as np
 from statistics import stdev
 root_dir = 'small'
-os.chdir('results-2021/pso')
+os.chdir('results-2021/de')
 def type_result(syn):
     ##single hop
     #type 1 2 3
