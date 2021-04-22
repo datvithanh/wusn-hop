@@ -1,5 +1,5 @@
-# python mfea_nrk/GA.py
-# python mfea_nrk/PSO.py
+python mfea_nrk/GA.py
+python mfea_nrk/PSO.py
 python mfea_nrk/DE.py
 
 

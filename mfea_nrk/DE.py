@@ -106,14 +106,14 @@ if __name__ == "__main__":
 
     for i in range(5):
         rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if not (('uu' in tmp and 'r50' in tmp and '_40' in tmp) or ('uu' not in tmp and ('r50' in tmp or '_40' in tmp))) and tmp != '.DS_Store']
-        # rerun_hop = [tmp for tmp in os.listdir('data/small/hop') if 'ga' in tmp and '_0' in tmp and 'r25' in tmp]
-        
+        rerun_hop = [tmp for tmp in rerun_hop if 'ga' in tmp and 'r25' in tmp]
+
         tests = tests + rerun_hop
         is_hops = is_hops + ['small/hop'] * len(rerun_hop)
         pases = pases + [i] * len(rerun_hop)
 
         rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if not (('no' in tmp or 'ga' in tmp) and 'r50' in tmp) and tmp != '.DS_Store']
-        # rerun_layer = [tmp for tmp in os.listdir('data/small/layer') if 'ga' in tmp and 'r25' in tmp]
+        rerun_layer = [tmp for tmp in rerun_layer if 'ga' in tmp and 'r25' in tmp]
 
         tests = tests + rerun_layer
         is_hops = is_hops + ['small/layer'] * len(rerun_layer)
