@@ -355,6 +355,13 @@ if __name__ == '__main__':
     os.makedirs('results/mfea33', exist_ok=True)
     tests, pases = instances(args.single, args.multi)
     
+
+    total = list(zip(tests, pases))
+
+    total = [(k,v) for k, v in total if 'ga' in k[-1]]
+    
+    tests, pases = zip(*total)
+
     print(len(tests))
     print(len(pases))
 
